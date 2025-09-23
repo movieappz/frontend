@@ -14,7 +14,7 @@ export interface IResult {
   original_name?: string;
   overview: string;
   poster_path: string | null;
-  media_type: string; // "movie" | "tv" u.a.
+  media_type: string;
   adult?: boolean;
   original_language: OriginalLanguage | string;
   genre_ids: number[];

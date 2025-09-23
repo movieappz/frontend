@@ -12,7 +12,7 @@ export interface Result {
   size: number;
   type: Type;
   official: boolean;
-  published_at: string; // ISO-String
+  published_at: string;
   id: string;
 }
 

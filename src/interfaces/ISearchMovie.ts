@@ -12,15 +12,15 @@ export interface Result {
   id: number;
   original_language: OriginalLanguage | string;
   original_title?: string;
-  original_name?: string; // für TV
+  original_name?: string;
   overview: string;
   popularity: number;
   poster_path: string | null;
-  release_date?: string; // als String
-  first_air_date?: string; // für TV
-  title?: string; // Movie
-  name?: string; // TV
-  media_type?: string; // z.B. "movie" | "tv"
+  release_date?: string;
+  first_air_date?: string;
+  title?: string;
+  name?: string;
+  media_type?: string;
   video?: boolean;
   vote_average: number;
   vote_count: number;
