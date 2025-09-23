@@ -8,10 +8,6 @@ export default function ExampleCarouselImage({
   imgUrl,
 }: ExampleCarouselImageProps) {
   return (
-    <img
-      className="d-block w-100 h-50 border-2 border-red-800"
-      src={imgUrl}
-      alt={text}
-    />
+    <img className="d-block w-100 object-cover" src={imgUrl} alt={text} />
   );
 }

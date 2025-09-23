@@ -7,17 +7,13 @@ export default function MoviePage() {
   const { states } = useContext(mainContext) as MainContextProps;
 
   return (
-    <div>
+    <div className="container-responsive">
       {states.categories !== null && (
-        <>
-          {states.movies.map((movie) => {
-            return (
-              <>
-                <MovieItem movie={movie} />
-              </>
-            );
-          })}
-        </>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+          {states.movies.map((movie) => (
+            <MovieItem key={movie.id} movie={movie} />
+          ))}
+        </div>
       )}
     </div>
   );

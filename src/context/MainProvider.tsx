@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer } from "react";
+import React, { createContext, useEffect, useReducer, useRef } from "react";
 import axios from "axios";
 import { reducer } from "../functions/reducer";
 import type { IState, TAction } from "../interfaces/interfaces";
@@ -6,8 +6,9 @@ import { useParams } from "react-router";
 
 export interface MainContextProps {
   states: IState;
+  searchRef: React.RefObject<HTMLInputElement | null>;
   dispatch: React.Dispatch<TAction>;
-  searchMovies: (query: string) => Promise<void>;
+  searchMovies: (query: string | undefined) => Promise<void>;
   clearSearch: () => void;
   fetchMovieDetail: (id: string | undefined) => Promise<void>;
 }
@@ -23,6 +24,7 @@ export default function MainProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const searchRef = useRef<HTMLInputElement | null>(null);
   const params = useParams();
   const [states, dispatch] = useReducer(reducer, {
     movies: [],
@@ -31,12 +33,12 @@ export default function MainProvider({
     selectedMovie: null,
     loading: false,
     error: null,
-    include_adult: true,
+    include_adult: false,
     genre: 35,
     page: 1,
   });
 
-  const searchMovies = async (query: string) => {
+  const searchMovies = async (query: string | undefined) => {
     if (!query) return;
     dispatch({ type: "FETCH_START" });
     try {
@@ -52,6 +54,18 @@ export default function MainProvider({
         type: "FETCH_SEARCH_SUCCESS",
         payload: { query, movies: resp.data.results ?? [] },
       });
+      if (searchRef.current?.value.length === 0) {
+        setTimeout(() => {
+          axios.get(
+            `https://api.themoviedb.org/3/search/movie?include_adult=${
+              states.include_adult
+            }&language=en-US&page=${states.page}&query=${encodeURIComponent(
+              query
+            )}`,
+            { headers: AUTH_HEADER }
+          );
+        }, 3000);
+      }
     } catch (error) {
       dispatch({ type: "FETCH_ERROR", payload: "Fehler bei der Suche" });
     }
@@ -118,7 +132,14 @@ export default function MainProvider({
 
   return (
     <mainContext.Provider
-      value={{ states, dispatch, searchMovies, clearSearch, fetchMovieDetail }}
+      value={{
+        states,
+        dispatch,
+        searchMovies,
+        clearSearch,
+        fetchMovieDetail,
+        searchRef,
+      }}
     >
       {children}
     </mainContext.Provider>

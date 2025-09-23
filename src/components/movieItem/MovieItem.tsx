@@ -29,16 +29,26 @@ export default function MovieItem({ movie }: MovieItemProps) {
     "unknown";
 
   return (
-    <NavLink to={`/detail/${movie.id}`} className="flex">
-      <img src={imageUrl} alt="" className="w-50 h-50 " />
-      <div className="flex">
-        <div>
-          <h4>{title}</h4>
-          <span>⭐️ {movie.vote_average.toFixed(1)}</span> ⏺{" "}
-          <p>{movie.release_date} </p>{" "}
-          <p>
-            {genreFunction(movie.genre_ids)} ⏺ {movie.runtime}
-          </p>
+    <NavLink
+      to={`/detail/${movie.id}`}
+      className="group block rounded-lg border-2 bg-white/90 !text-[var(--color-brand-text)] overflow-hidden hover:-translate-y-0.5 transition-transform focus:outline-none !border-[var(--color-brand-bg)] !no-underline w-full
+"
+    >
+      <div className="aspect-[2/3] w-full overflow-hidden">
+        <img
+          src={imageUrl}
+          alt={title}
+          className="h-full w-full object-cover group-hover:opacity-95"
+        />
+      </div>
+      <div className="p-3">
+        <h6 className="text-sm sm:text-base font-semibold leading-snug truncate">
+          {title}
+        </h6>
+        <div className="mt-1 text-xs sm:text-sm opacity-90 flex flex-wrap items-center gap-x-2 gap-y-0.5">
+          <span>⭐️ {movie.vote_average.toFixed(1)}</span>
+          {movie.release_date && <span>• {movie.release_date}</span>}
+          <span className="truncate">• {genreFunction(movie.genre_ids)}</span>
         </div>
       </div>
     </NavLink>
