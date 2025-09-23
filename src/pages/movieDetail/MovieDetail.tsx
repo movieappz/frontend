@@ -17,6 +17,7 @@ export default function MovieDetail() {
   ) as MainContextProps;
 
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
+  const [trailerChecked, setTrailerChecked] = useState(false);
   const [loadingTrailer, setLoadingTrailer] = useState(false);
 
   useEffect(() => {
@@ -61,6 +62,7 @@ export default function MovieDetail() {
       setTrailerKey(null);
     } finally {
       setLoadingTrailer(false);
+      setTrailerChecked(true);
     }
   };
 
@@ -134,7 +136,7 @@ export default function MovieDetail() {
         </div>
       </div>
 
-      {trailerKey ? (
+      {trailerKey && (
         <div className="mt-6">
           <div className="rounded-lg overflow-hidden border-2 border-[--color-brand-border]">
             <div className="relative w-full" style={{ paddingTop: "56.25%" }}>
@@ -149,10 +151,10 @@ export default function MovieDetail() {
             </div>
           </div>
         </div>
-      ) : (
-        <>
-          <h4 className="!text-red-400">Not Youtube Video is Available</h4>
-        </>
+      )}
+
+      {trailerChecked && !trailerKey && (
+        <h3 className="pt-7 text-center">Not YouTube Video is available</h3>
       )}
     </div>
   );

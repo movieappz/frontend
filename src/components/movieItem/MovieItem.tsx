@@ -19,7 +19,7 @@ export default function MovieItem({ movie }: MovieItemProps) {
 
   const imageUrl = movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-    : undefined;
+    : "https://via.placeholder.com/500x750?text=No+Image";
 
   const title =
     movie.title ||

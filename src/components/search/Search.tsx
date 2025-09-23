@@ -22,6 +22,9 @@ export default function Search() {
       timeoutRef.current = setTimeout(() => {
         if (searchRef.current) searchRef.current.value = "";
       }, 5000);
+      if (val.length === 0) {
+        navigate("/category/28");
+      }
     } else {
       navigate("/category/28");
     }
