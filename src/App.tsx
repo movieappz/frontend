@@ -25,6 +25,7 @@ function App() {
         <Route index element={<Home />} />
         <Route path="/category/:genreId" element={<MovieList />} />
         <Route path="/detail/:movieId" element={<MovieDetail />} />
+        <Route path="/search" element={<MovieList />} />
       </Route>
     )
   );
