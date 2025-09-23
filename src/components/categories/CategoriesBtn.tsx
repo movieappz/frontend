@@ -8,7 +8,7 @@ export default function CategoriesBtn() {
 
   return (
     <>
-      <ul>
+      <ul className="flex justify-between align-sub w-100 flex-wrap">
         {states.categories.map((category: ICategory) => {
           return (
             <div key={category.id}>
