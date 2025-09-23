@@ -24,6 +24,7 @@ export type TAction =
     | { type: "FETCH_SUCCESS"; payload: { categories: ICategory[]; movies: IMovieDetail[] } }
     | { type: "FETCH_DETAIL_SUCCESS"; payload: IMovieDetail }
     | { type: "FETCH_SEARCH_SUCCESS"; payload: { query: string; movies: IMovieDetail[] } }
-    | { type: "FETCH_CATEGORY_SUCCESS"; payload: { movies: IMovieDetail[] } }
+    | { type: "FETCH_CATEGORY_SUCCESS"; payload: { categories: ICategory[] } }
+    | { type: "FETCH_CATEGORY_MOVIE_SUCCESS"; payload: { movies: IMovieDetail[] } }
     | { type: "CLEAR_SEARCH" }
     | { type: "FETCH_ERROR"; payload: string };

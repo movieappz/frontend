@@ -2,13 +2,14 @@ import React, { createContext, useEffect, useReducer } from "react";
 import axios from "axios";
 import { reducer } from "../functions/reducer";
 import type { IState, TAction } from "../interfaces/interfaces";
+import { useParams } from "react-router";
 
 export interface MainContextProps {
   states: IState;
   dispatch: React.Dispatch<TAction>;
   searchMovies: (query: string) => Promise<void>;
   clearSearch: () => void;
-  fetchMovieDetail: (id: string) => Promise<void>;
+  fetchMovieDetail: (id: string | undefined) => Promise<void>;
 }
 
 export const mainContext = createContext<MainContextProps | null>(null);
@@ -22,6 +23,7 @@ export default function MainProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const params = useParams();
   const [states, dispatch] = useReducer(reducer, {
     movies: [],
     categories: [],
@@ -55,7 +57,7 @@ export default function MainProvider({
     }
   };
 
-  const fetchMovieDetail = async (id: string) => {
+  const fetchMovieDetail = async (id: string | undefined) => {
     dispatch({ type: "FETCH_START" });
     try {
       const resp = await axios.get(
@@ -74,35 +76,45 @@ export default function MainProvider({
     const fetchInitial = async () => {
       dispatch({ type: "FETCH_START" });
       try {
-        const [trendingResp, genresResp] = await Promise.all([
+        const [trendingResp, categoriesResp] = await Promise.all([
           axios.get(
             "https://api.themoviedb.org/3/trending/all/day?language=en-US",
-            {
-              headers: AUTH_HEADER,
-            }
+            { headers: AUTH_HEADER }
           ),
           axios.get(
             "https://api.themoviedb.org/3/genre/movie/list?language=en",
-            {
-              headers: AUTH_HEADER,
-            }
+            { headers: AUTH_HEADER }
           ),
         ]);
-
         dispatch({
           type: "FETCH_SUCCESS",
           payload: {
-            categories: genresResp.data.genres ?? [],
             movies: trendingResp.data.results ?? [],
+            categories: categoriesResp.data.genres ?? [],
           },
         });
+        if (params.genreId) {
+          try {
+            const resp = await axios.get(
+              `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc&with_genres=${params.genreId}`,
+              { headers: AUTH_HEADER }
+            );
+
+            dispatch({
+              type: "FETCH_CATEGORY_MOVIE_SUCCESS",
+              payload: { movies: resp.data.results ?? [] },
+            });
+          } catch (error) {}
+        }
       } catch (error) {
         dispatch({ type: "FETCH_ERROR", payload: "Fehler beim Initial-Fetch" });
       }
     };
 
     fetchInitial();
-  }, []);
+  }, [params.genreId]);
+
+  console.log(states);
 
   return (
     <mainContext.Provider

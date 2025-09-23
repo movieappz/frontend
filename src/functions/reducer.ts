@@ -18,6 +18,13 @@ export const reducer = (state: IState, action: TAction): IState => {
             return {
                 ...state,
                 loading: false,
+                categories: action.payload.categories
+            }
+
+        case "FETCH_CATEGORY_MOVIE_SUCCESS":
+            return {
+                ...state,
+                loading: false,
                 movies: action.payload.movies
             }
 
