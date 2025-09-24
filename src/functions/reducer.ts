@@ -6,6 +6,17 @@ export const reducer = (state: IState, action: TAction): IState => {
         case "FETCH_START":
             return { ...state, loading: true, error: null };
 
+        case "SET_PAGE":
+            return { ...state, page: action.payload };
+
+
+        case "FETCH_SUCCESS_PAGE_CHANGE":
+            return {
+                ...state,
+                loading: false,
+                movies: action.payload.movies,
+            };
+
         case "FETCH_DETAIL_SUCCESS":
             return {
                 ...state,
