@@ -10,11 +10,12 @@ interface MovieItemProps {
 export default function MovieItem({ movie }: MovieItemProps) {
   const { states } = useContext(mainContext) as MainContextProps;
 
-  const genreFunction = (genreIDs: number[]): string => {
+  const genreFunction = (genreIDs?: number[]): string => {
+    if (!Array.isArray(genreIDs) || genreIDs.length === 0) return "";
     return genreIDs
       .map((id) => states.categories.find((el) => el.id === id)?.name)
       .filter(Boolean)
-      .join(" ");
+      .join(", ");
   };
 
   const imageUrl = movie.poster_path
@@ -46,9 +47,11 @@ export default function MovieItem({ movie }: MovieItemProps) {
           {title}
         </h6>
         <div className="mt-1 text-xs sm:text-sm opacity-90 flex flex-wrap items-center gap-x-2 gap-y-0.5">
-          <span>⭐️ {movie.vote_average.toFixed(1)}</span>
+          <span>⭐️ {movie.vote_average?.toFixed(1)}</span>
           {movie.release_date && <span>• {movie.release_date}</span>}
-          <span className="truncate">• {genreFunction(movie.genre_ids)}</span>
+          {genreFunction(movie.genre_ids) && (
+            <span className="truncate">• {genreFunction(movie.genre_ids)}</span>
+          )}
         </div>
       </div>
     </NavLink>

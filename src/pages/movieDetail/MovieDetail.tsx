@@ -7,6 +7,7 @@ import {
 } from "../../context/MainProvider";
 import type { IMovieTrailer } from "../../interfaces/IMovieTrailer";
 import axios from "axios";
+import SkeletonGrid from "../../components/SkeletonCard/SkeletonGrid";
 
 export default function MovieDetail() {
   const { movieId } = useParams();
@@ -68,6 +69,7 @@ export default function MovieDetail() {
 
   return (
     <div className="container-responsive">
+      {states.loading && <SkeletonGrid count={10} />}
       <div className="mb-4 flex items-center gap-2">
         <button
           onClick={handleBack}

@@ -3,6 +3,7 @@ import { mainContext, type MainContextProps } from "../../context/MainProvider";
 
 import MovieItem from "../../components/movieItem/MovieItem";
 import { useNavigate } from "react-router";
+import SkeletonGrid from "../../components/SkeletonCard/SkeletonGrid";
 
 export default function MoviePage() {
   const { states, nextPage, prevPage } = useContext(
@@ -16,14 +17,32 @@ export default function MoviePage() {
     navigate({ search: params.toString() }, { replace: true });
   }, [states.page]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [states.page]);
+
+  if (states.error) {
+    return (
+      <>
+        <p>Something is wrong</p>
+      </>
+    );
+  }
+
   return (
     <div className="container-responsive">
-      {states.categories !== null && (
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {states.movies.map((movie) => (
-            <MovieItem key={movie.id} movie={movie} />
-          ))}
-        </div>
+      {states.loading ? (
+        <SkeletonGrid count={10} />
+      ) : (
+        states.categories !== null && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {states?.movies?.map((movie) => (
+              <MovieItem key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )
       )}
       <div className="flex justify-between mt-4">
         <button
