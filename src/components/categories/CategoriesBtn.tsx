@@ -13,10 +13,10 @@ export default function CategoriesBtn() {
           return (
             <li key={category.id} className="shrink-0">
               <NavLink
-                className={"text-red-400!"}
                 to={`/category/${category.id}`}
+                className={"!text-green-500"}
               >
-                <button className="btn whitespace-nowrap bg-transparent text-[--color-brand-text] border-2 border-[--color-brand-border] hover:bg-[--color-brand-border]/40 focus:outline-none focus:ring-2 focus:ring-[--color-brand-border] px-3 py-1 rounded-md text-sm active:text-[--color-brand-bg]!">
+                <button className="btn whitespace-nowrap bg-transparent !text-white border-2 border-[--color-brand-border] hover:bg-[--color-brand-border]/40 focus:outline-none focus:ring-2 focus:ring-[--color-brand-border] px-3 py-1 rounded-md text-sm !active:text-[var(--color-brand-bg)]">
                   {category.name}
                 </button>
               </NavLink>

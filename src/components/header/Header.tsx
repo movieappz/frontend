@@ -6,7 +6,7 @@ export default function Header() {
   return (
     <header
       data-app-header
-      className="fixed top-0 inset-x-0 z-50 bg-[--color-brand-bg]/85 backdrop-blur border-b border-[--color-brand-border]/40"
+      className="fixed top-0 inset-x-0 z-50 bg-[var(--color-brand-bg)]/85 backdrop-blur border-b border-[--color-brand-border]/40"
     >
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
         <div className="flex items-center gap-3 sm:gap-4 justify-between">
@@ -16,7 +16,7 @@ export default function Header() {
               className="inline-flex items-center gap-2 !no-underline"
             >
               <span className="text-base sm:text-lg font-semibold tracking-tight text-[--color-brand-border]">
-                <img src="/home.png" alt="" className="w-8" />
+                <img src="/home_two.png" alt="" className="w-8" />
               </span>
             </Link>
           </div>
@@ -31,14 +31,14 @@ export default function Header() {
               className="px-3 py-1.5 rounded-md text-[--color-brand-text] hover:bg-[--color-brand-border]/30 transition-colors !no-underline"
               aria-label="Sign In"
             >
-              <img src="/signin.png" className="w-6" />
+              <img src="/signin_two.png" className="w-6" />
             </Link>
             <Link
               to={"/signup"}
               className="px-3 py-1.5 rounded-md bg-[--color-brand-border]/20 text-[--color-brand-text] hover:bg-[--color-brand-border]/40 transition-colors !no-underline"
               aria-label="Sign Up"
             >
-              <img src="/signup.png" alt="" />
+              <img src="/signup_two.png" alt="" className="w-5" />
             </Link>
           </div>
         </div>
