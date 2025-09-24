@@ -1,10 +1,5 @@
 @import "tailwindcss";
 
-/* Theme variables */
-/* Using plain CSS vars to avoid tooling warnings */
-/* They are referenced via bg-[--color-brand-bg], etc. */
-/* Define in :root below */
-
 :root {
   --color-brand-text: #1b2021;
   --color-brand-bg: #89023e;
@@ -35,19 +30,21 @@ body {
   min-height: 100vh;
 }
 
-/* Global utility bridge for Bootstrap + Tailwind look */
 img {
   max-width: 100%;
   height: auto;
   display: block;
   border-radius: 0.5rem;
-  border: 2px solid var(--color-brand-border);
 }
 
 button,
 .btn {
   color: var(--color-brand-text);
-  background-color: color-mix(in srgb, var(--color-brand-border) 35%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-brand-border) 35%,
+    transparent
+  );
   border: 2px solid var(--color-brand-border);
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
@@ -55,7 +52,11 @@ button,
 
 button:hover,
 .btn:hover {
-  background-color: color-mix(in srgb, var(--color-brand-border) 55%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--color-brand-border) 55%,
+    transparent
+  );
 }
 
 .container-responsive {
@@ -79,7 +80,6 @@ button:hover,
   }
 }
 
-/* Bootstrap Carousel theming */
 .carousel,
 .carousel-item,
 .carousel-inner {
@@ -103,7 +103,6 @@ button:hover,
   filter: drop-shadow(0 0 4px #000);
 }
 
-/* Hide scrollbars utility */
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -111,7 +110,3 @@ button:hover,
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
-
-/* Remove old vite defaults for h1/button to keep theme consistent */
-
-/* Remove default light/dark switching to respect our theme */
