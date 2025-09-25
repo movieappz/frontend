@@ -1,10 +1,10 @@
-// import { useNavigate } from "react-router-dom";
-// import { axiosPublic } from "../../utils/axiosConfig";
+import { axiosPublic } from "../../utils/axiosConfig";
+import { useNavigate } from "react-router";
 import { useUserStore } from "../../store/userStore";
 
 export default function SignUp() {
-  //   const { setUser, reloadUser } = useUserStore();
-  //   const navigate = useNavigate();
+  const { setUser, reloadUser } = useUserStore();
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,21 +19,19 @@ export default function SignUp() {
 
     console.log(signupData);
     try {
-      //   const resp = await axiosPublic.post("/signup", signupData, {
-      //     headers: { "Content-Type": "application/json" },
-      //     withCredentials: true,
-      //   });
-      //   if (resp.data.user) {
-      //     // Zustand-Store aktualisieren
-      //     setUser(resp.data.user);
-      //     await reloadUser();
-      //     // Routing abhängig von deiner Logik
-      //     if (resp.data.existingUser) {
-      //       navigate("/matche");
-      //     } else {
-      //       navigate("/signin");
-      //     }
-      //   }
+      const resp = await axiosPublic.post("/signup", signupData, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      if (resp.data.user) {
+        setUser(resp.data.user);
+        await reloadUser();
+        if (resp.data.existingUser) {
+          console.log("User ist Daaa");
+        } else {
+          navigate("/login");
+        }
+      }
     } catch (error) {
       console.error(error);
     }
