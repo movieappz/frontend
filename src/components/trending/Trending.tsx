@@ -14,12 +14,10 @@ export default function Trending() {
     setIndex(selectedIndex);
   };
 
-  console.log(states.movies);
-
   return (
     <>
       <div className="container-responsive">
-        <h3 className="text-lg sm:text-xl font-semibold mb-3 text-[--color-brand-border]">
+        <h3 className="text-lg sm:text-xl font-semibold mb-3 !text-[var(--color-brand-bg)]">
           Trending
         </h3>
       </div>
@@ -40,10 +38,10 @@ export default function Trending() {
             <Carousel.Item key={movie.id}>
               <NavLink to={`/detail/${movie.id}`}>
                 <ExampleCarouselImage text={title} imgUrl={imageUrl} />
-                <Carousel.Caption className="backdrop-blur-sm">
-                  <h3 className="text-[--color-brand-border] text-base sm:text-xl font-semibold">
+                <Carousel.Caption className="backdrop-blur-sm mb-3">
+                  <h6 className="!text-[var(--color-brand-border)] text-base sm:text-4xl">
                     {title}
-                  </h3>
+                  </h6>
                 </Carousel.Caption>
               </NavLink>
             </Carousel.Item>
