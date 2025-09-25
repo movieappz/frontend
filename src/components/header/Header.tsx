@@ -27,7 +27,7 @@ export default function Header() {
 
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
-              to={"/signin"}
+              to={"/login"}
               className="px-3 py-1.5 rounded-md text-[--color-brand-text] hover:bg-[--color-brand-border]/30 transition-colors !no-underline"
               aria-label="Sign In"
             >

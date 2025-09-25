@@ -11,6 +11,8 @@ import Home from "./pages/home/Home";
 import MovieList from "./pages/movieList/MovieList";
 import MovieDetail from "./pages/movieDetail/MovieDetail";
 import PageWrapper from "./components/pageWrapper/PageWrapper";
+import Login from "./pages/login/Login";
+import SignUp from "./pages/signUp/SignUp";
 
 function App() {
   const router = createBrowserRouter(
@@ -45,6 +47,23 @@ function App() {
           element={
             <PageWrapper>
               <MovieList />
+            </PageWrapper>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <PageWrapper>
+              <Login />
+            </PageWrapper>
+          }
+        />
+
+        <Route
+          path="/signup"
+          element={
+            <PageWrapper>
+              <SignUp />
             </PageWrapper>
           }
         />
