@@ -13,7 +13,6 @@ export default function PageWrapper({
   useLayoutEffect(() => {
     if (!pageRef.current) return;
     const ctx = gsap.context(() => {
-      // Smooth scroll to top on route change
       if (typeof window !== "undefined") {
         window.scrollTo({ top: 0, behavior: "smooth" });
       }

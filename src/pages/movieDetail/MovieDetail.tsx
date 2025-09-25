@@ -39,8 +39,8 @@ export default function MovieDetail() {
     "unknown";
 
   const releaseYear = useMemo(() => {
-    const d = movie?.release_date || movie?.first_air_date;
-    return d ? new Date(d).getFullYear() : undefined;
+    const date = movie?.release_date || movie?.first_air_date;
+    return date ? new Date(date).getFullYear() : undefined;
   }, [movie?.release_date, movie?.first_air_date]);
 
   const runtime = movie?.runtime || (movie?.episode_run_time?.[0] ?? undefined);
@@ -56,7 +56,7 @@ export default function MovieDetail() {
         { headers: AUTH_HEADER }
       );
       const trailer = resp.data.results.find(
-        (v) => v.site === "YouTube" && v.type === "Trailer"
+        (video) => video.site === "YouTube" && video.type === "Trailer"
       );
       setTrailerKey(trailer ? trailer.key : null);
     } catch (e) {
@@ -94,7 +94,7 @@ export default function MovieDetail() {
         <div className="lg:col-span-2">
           <div className="rounded-lg border-2 border-[--color-brand-border] bg-white/90 text-[--color-brand-text] p-4 sm:p-6">
             <h1 className="text-2xl sm:text-3xl font-bold mb-2">
-              {title}{" "}
+              {title}
               {releaseYear ? (
                 <span className="opacity-80">({releaseYear})</span>
               ) : null}

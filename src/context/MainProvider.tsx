@@ -27,7 +27,7 @@ export default function MainProvider({
   children: React.ReactNode;
 }) {
   // = HOOKS
-  const params = useParams();
+  const params = useParams<string>();
   const searchRef = useRef<HTMLInputElement | null>(null);
   const prevGenreIdRef = useRef<string | undefined>(params.genreId);
   const [searchParams, setSearchParams] = useSearchParams();
