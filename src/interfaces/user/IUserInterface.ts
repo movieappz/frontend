@@ -3,7 +3,7 @@ export interface IUser {
     username: string
     email: string;
     password: string;
-    favorites: string[];
+    favorites: number[];
 }
 
 export interface IUserState {

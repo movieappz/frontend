@@ -1,22 +1,124 @@
+// userStore.ts
 import { create } from "zustand"
+import { persist, createJSONStorage } from "zustand/middleware"
 import type { IUserState } from "../interfaces/user/IUserInterface"
-import axios from "axios"
-import { AUTH_HEADER } from "../context/MainProvider";
+import { axiosPublic } from "../utils/axiosConfig";
 
+interface IUserStore extends IUserState {
+    isLoading: boolean;
+    isLoggedIn: boolean;
+    isInitialized: boolean;
+    toggleFavorite: (movieId: number) => void;
+    initializeAuth: () => Promise<void>;
+    logout: () => void;
+}
 
-export const useUserStore = create<IUserState>((set) => ({
-    user: null,
-    setUser: (u) => set({ user: u }),
-    reloadUser: async () => {
-        try {
-            const resp = await axios.get("/me", { headers: AUTH_HEADER });
-            if (resp.data !== null) {
-                set({ user: resp.data })
-            } else {
-                set({ user: null })
+export const useUserStore = create<IUserStore>()(
+    persist(
+        (set, get) => ({
+            user: null,
+            isLoading: false,
+            isLoggedIn: false,
+            isInitialized: false,
+
+            setUser: (user) => set({ user: user, isLoggedIn: !!user }),
+
+            toggleFavorite: (movieId: number) => {
+                const user = get().user;
+                if (!user) return;
+
+                const alreadyLiked = user?.favorites?.includes(movieId);
+                const updatedFavorites = alreadyLiked
+                    ? user?.favorites?.filter((id) => id !== movieId)
+                    : [...(user?.favorites || []), movieId];
+
+                set({ user: { ...user, favorites: updatedFavorites } });
+            },
+
+            initializeAuth: async () => {
+                if (get().isInitialized) return;
+
+                set({ isLoading: true, isInitialized: true });
+
+                try {
+                    const resp = await axiosPublic.get("/currentUser", {
+                        withCredentials: true,
+                    });
+
+                    console.log("Response from /currentUser:", resp.data);
+
+                    if (resp.data && resp.data._id) {
+                        set({
+                            user: resp.data,
+                            isLoading: false,
+                            isLoggedIn: true
+                        });
+                    } else {
+                        set({
+                            user: null,
+                            isLoading: false,
+                            isLoggedIn: false
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error in initializeAuth:", error);
+                    set({
+                        user: null,
+                        isLoading: false,
+                        isLoggedIn: false
+                    });
+                }
+            },
+
+            reloadUser: async () => {
+                set({ isLoading: true });
+                try {
+                    const resp = await axiosPublic.get("/currentUser", {
+                        withCredentials: true,
+                    });
+                    console.log("Response from /currentUser:", resp.data);
+
+                    if (resp.data && resp.data._id) {
+                        set({
+                            user: resp.data,
+                            isLoading: false,
+                            isLoggedIn: true
+                        });
+                    } else {
+                        set({
+                            user: null,
+                            isLoading: false,
+                            isLoggedIn: false
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error in reloadUser:", error);
+                    set({
+                        user: null,
+                        isLoading: false,
+                        isLoggedIn: false
+                    });
+                }
+            },
+
+            logout: () => {
+                set({
+                    user: null,
+                    isLoading: false,
+                    isLoggedIn: false,
+                    isInitialized: true
+                });
             }
-        } catch (error) {
-            set({ user: null });
+        }),
+        {
+            name: "user-store",
+            storage: createJSONStorage(() => localStorage),
+            partialize: (state) => ({
+                user: state.user,
+                isLoggedIn: state.isLoggedIn
+            }),
         }
-    }
-}))
+    )
+)
+
+
