@@ -7,6 +7,7 @@ import {
 import "./App.css";
 import Layout from "./layout/Layout";
 import MainProvider from "./context/MainProvider";
+import { ThemeProvider } from "./context/ThemeProvider";
 import Home from "./pages/home/Home";
 import MovieList from "./pages/movieList/MovieList";
 import MovieDetail from "./pages/movieDetail/MovieDetail";
@@ -14,6 +15,7 @@ import PageWrapper from "./components/pageWrapper/PageWrapper";
 import Login from "./pages/login/Login";
 import SignUp from "./pages/signUp/SignUp";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Favorites from "./pages/favorites/Favorites";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 
 function App() {
@@ -22,9 +24,11 @@ function App() {
       <Route
         path="/"
         element={
-          <MainProvider>
-            <Layout />
-          </MainProvider>
+          <ThemeProvider>
+            <MainProvider>
+              <Layout />
+            </MainProvider>
+          </ThemeProvider>
         }
       >
         <Route index element={<Home />} />
@@ -76,6 +80,17 @@ function App() {
             <PageWrapper>
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            </PageWrapper>
+          }
+        />
+
+        <Route
+          path="/favorites"
+          element={
+            <PageWrapper>
+              <ProtectedRoute>
+                <Favorites />
               </ProtectedRoute>
             </PageWrapper>
           }

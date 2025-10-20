@@ -19,8 +19,11 @@ export default function ProtectedRoute({
 
   if (!isInitialized || isLoading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-500"></div>
+      <div className="min-h-screen bg-[rgb(var(--bg-primary))] flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-[rgb(var(--accent-primary))] border-t-transparent mx-auto mb-4"></div>
+          <p className="text-[rgb(var(--text-secondary))]">Wird geladen...</p>
+        </div>
       </div>
     );
   }

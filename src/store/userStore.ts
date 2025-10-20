@@ -23,16 +23,28 @@ export const useUserStore = create<IUserStore>()(
 
             setUser: (user) => set({ user: user, isLoggedIn: !!user }),
 
-            toggleFavorite: (movieId: number) => {
+            toggleFavorite: async (movieId: number) => {
                 const user = get().user;
                 if (!user) return;
 
-                const alreadyLiked = user?.favorites?.includes(movieId);
-                const updatedFavorites = alreadyLiked
-                    ? user?.favorites?.filter((id) => id !== movieId)
-                    : [...(user?.favorites || []), movieId];
+                try {
+                    const resp = await axiosPublic.post(`/favorites/toggle/${movieId}`, {}, {
+                        withCredentials: true,
+                    });
 
-                set({ user: { ...user, favorites: updatedFavorites } });
+                    if (resp.data.success && resp.data.user) {
+                        set({ user: resp.data.user });
+                    }
+                } catch (error) {
+                    console.error("Error toggling favorite:", error);
+                    // Fallback: Lokale Aktualisierung bei Fehler
+                    const alreadyLiked = user?.favorites?.includes(movieId);
+                    const updatedFavorites = alreadyLiked
+                        ? user?.favorites?.filter((id) => id !== movieId)
+                        : [...(user?.favorites || []), movieId];
+
+                    set({ user: { ...user, favorites: updatedFavorites } });
+                }
             },
 
             initializeAuth: async () => {

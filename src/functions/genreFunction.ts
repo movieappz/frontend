@@ -1,13 +1,9 @@
-import { useContext } from "react";
-import { mainContext, type MainContextProps } from "../context/MainProvider";
+import type { ICategory } from "../interfaces/interfaces";
 
-
-
-export const genreFunction = (genreIDs?: number[]): string => {
-    const { states } = useContext(mainContext) as MainContextProps;
-    if (!Array.isArray(genreIDs) || genreIDs.length === 0) return "";
+export const genreFunction = (genreIDs?: number[], categories?: ICategory[]): string => {
+    if (!Array.isArray(genreIDs) || genreIDs.length === 0 || !categories) return "";
     return genreIDs
-        .map((id) => states.categories.find((el) => el.id === id)?.name)
+        .map((id) => categories.find((el) => el.id === id)?.name)
         .filter(Boolean)
         .join(", ");
 };

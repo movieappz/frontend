@@ -1,18 +1,61 @@
 @import "tailwindcss";
 
-:root {
-  --color-brand-text: #1b2021;
-  --color-brand-bg: #89023e;
-  --color-brand-border: #ffd9da;
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color: var(--color-brand-text);
-  background-color: var(--color-brand-bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Custom Tailwind Configuration */
+@layer base {
+  :root {
+    /* Light Mode Colors */
+    --bg-primary: 237 242 244; /* #edf2f4 */
+    --bg-secondary: 255 255 255; /* #ffffff */
+    --bg-tertiary: 248 249 250; /* #f8f9fa */
+    --accent-primary: 217 4 41; /* #d90429 */
+    --accent-secondary: 255 181 99; /* #ffb563 */
+    --text-primary: 45 55 72; /* #2d3748 */
+    --text-secondary: 74 85 104; /* #4a5568 */
+    --text-muted: 113 128 150; /* #718096 */
+    --border: 226 232 240; /* #e2e8f0 */
+    --border-light: 241 245 249; /* #f1f5f9 */
+  }
+
+  [data-theme="dark"] {
+    /* Dark Mode Colors */
+    --bg-primary: 13 19 33; /* #0d1321 */
+    --bg-secondary: 26 35 50; /* #1a2332 */
+    --bg-tertiary: 42 52 65; /* #2a3441 */
+    --accent-primary: 62 92 118; /* #3e5c76 */
+    --accent-secondary: 240 235 216; /* #f0ebd8 */
+    --text-primary: 240 235 216; /* #f0ebd8 */
+    --text-secondary: 203 213 224; /* #cbd5e0 */
+    --text-muted: 160 174 192; /* #a0aec0 */
+    --border: 74 85 104; /* #4a5568 */
+    --border-light: 45 55 72; /* #2d3748 */
+  }
+
+  html {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  body {
+    @apply bg-[rgb(var(--bg-primary))] text-[rgb(var(--text-primary))] transition-colors duration-300;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[rgb(var(--accent-primary))] hover:bg-[rgb(var(--accent-primary))]/90 text-white font-medium px-4 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+  
+  .btn-secondary {
+    @apply bg-[rgb(var(--bg-secondary))] hover:bg-[rgb(var(--bg-tertiary))] text-[rgb(var(--text-primary))] border border-[rgb(var(--border))] font-medium px-4 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+  
+  .card {
+    @apply bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] rounded-xl shadow-sm hover:shadow-md transition-all duration-200;
+  }
+  
+  .input {
+    @apply bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-muted))] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent-primary))] focus:border-transparent transition-all duration-200;
+  }
 }
 
 a {
