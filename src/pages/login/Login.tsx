@@ -24,11 +24,11 @@ export default function Login() {
     console.log(LoginData);
 
     try {
-      const resp = await axiosPublic.post("/login", LoginData, {
+      const resp = await axiosPublic.post("/auth/login", LoginData, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
-      
+
       if (resp.data.loggingUser) {
         console.log(resp.data.loggingUser);
         setUser(resp.data.loggingUser);
@@ -38,7 +38,10 @@ export default function Login() {
       }
     } catch (error: any) {
       console.error(error);
-      setError(error.response?.data?.errors?.[0]?.message || "Login fehlgeschlagen. Bitte versuchen Sie es erneut.");
+      setError(
+        error.response?.data?.errors?.[0]?.message ||
+          "Login fehlgeschlagen. Bitte versuchen Sie es erneut."
+      );
     } finally {
       setIsLoading(false);
     }
@@ -51,43 +54,59 @@ export default function Login() {
           <div className="card p-8">
             <div className="text-center mb-8">
               <div className="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                <svg
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
+                  />
                 </svg>
               </div>
               <h1 className="text-2xl font-bold text-[rgb(var(--text-primary))] mb-2">
-                Willkommen zurück
+                Welcome Back
               </h1>
               <p className="text-[rgb(var(--text-secondary))]">
-                Melde dich in deinem Konto an
+                sign in to your account
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-[rgb(var(--text-primary))] mb-2">
-                    E-Mail-Adresse
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-[rgb(var(--text-primary))] mb-2"
+                  >
+                    E-Mail
                   </label>
-                  <input 
+                  <input
                     id="email"
-                    name="email" 
-                    type="email" 
-                    placeholder="deine@email.com" 
-                    required 
+                    name="email"
+                    type="email"
+                    placeholder="example@email.com"
+                    required
                     disabled={isLoading}
                     className="input w-full"
                   />
                 </div>
                 <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-[rgb(var(--text-primary))] mb-2">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-medium text-[rgb(var(--text-primary))] mb-2"
+                  >
                     Passwort
                   </label>
-                  <input 
+                  <input
                     id="password"
-                    name="password" 
+                    name="password"
                     type="password"
-                    placeholder="Dein Passwort" 
+                    placeholder="*********"
                     required
                     disabled={isLoading}
                     className="input w-full"
@@ -98,38 +117,50 @@ export default function Login() {
               {error && (
                 <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
                   <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <svg
+                      className="w-5 h-5 text-red-500"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
                     </svg>
-                    <p className="text-red-600 dark:text-red-400 text-sm">{error}</p>
+                    <p className="text-red-600 dark:text-red-400 text-sm">
+                      {error}
+                    </p>
                   </div>
                 </div>
               )}
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={isLoading}
                 className="btn-primary w-full py-3 text-lg"
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center gap-2">
                     <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent"></div>
-                    Wird angemeldet...
+                    loading...
                   </div>
                 ) : (
-                  "Anmelden"
+                  "Login"
                 )}
               </button>
             </form>
 
             <div className="mt-6 text-center">
               <p className="text-[rgb(var(--text-secondary))] text-sm">
-                Noch kein Konto?{" "}
+                Don't have an account?
                 <Link
                   to="/signup"
-                  className="text-[rgb(var(--accent-primary))] hover:text-[rgb(var(--accent-primary))]/80 font-medium"
+                  className="!text-[rgb(var(--accent-primary))] hover:text-[rgb(var(--accent-primary))]/80 font-medium !no-underline line-clamp-1"
                 >
-                  Jetzt registrieren
+                  sign up
                 </Link>
               </p>
             </div>

@@ -32,5 +32,5 @@ export default function PageWrapper({
     return () => ctx.revert();
   }, [pathname]);
 
-  return <div ref={pageRef}>{children}</div>;
+  return <div ref={pageRef} className="min-h-[calc(100vh-200px)] flex flex-col">{children}</div>;
 }

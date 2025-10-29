@@ -12,7 +12,6 @@ export const axiosPublic = axios.create({
 
 axiosPublic.interceptors.response.use(
     (response) => {
-        console.log(`✅ ${response.status} ${response.config.url}`);
         return response;
     },
     async (error) => {
@@ -47,7 +46,6 @@ axiosPublic.interceptors.response.use(
 
 axiosPublic.interceptors.request.use(
     (config) => {
-        console.log(`🚀 ${config.method?.toUpperCase()} ${config.url}`);
         return config;
     },
     (error) => {

@@ -11,7 +11,6 @@ export default function ProtectedRoute({
     useUserStore();
 
   useEffect(() => {
-    // Initialisiere Authentifizierung beim ersten Laden
     if (!isInitialized) {
       initializeAuth();
     }
@@ -22,7 +21,7 @@ export default function ProtectedRoute({
       <div className="min-h-screen bg-[rgb(var(--bg-primary))] flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-[rgb(var(--accent-primary))] border-t-transparent mx-auto mb-4"></div>
-          <p className="text-[rgb(var(--text-secondary))]">Wird geladen...</p>
+          <p className="text-[rgb(var(--text-secondary))]">Loading...</p>
         </div>
       </div>
     );

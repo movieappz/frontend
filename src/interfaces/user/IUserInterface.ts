@@ -4,6 +4,7 @@ export interface IUser {
     email: string;
     password: string;
     favorites: number[];
+    createdAt: string;
 }
 
 export interface IUserState {

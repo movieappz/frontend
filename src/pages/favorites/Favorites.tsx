@@ -29,7 +29,6 @@ export default function Favorites() {
       setError(null);
 
       try {
-        // Für jeden Favoriten eine TMDB API-Anfrage machen
         const moviePromises = user.favorites.map(async (movieId) => {
           try {
             const response = await axios.get(
@@ -38,18 +37,21 @@ export default function Favorites() {
             );
             return response.data;
           } catch (error) {
-            console.error(`Fehler beim Laden von Film ${movieId}:`, error);
+            error = `Failed to fetch movie with ID ${movieId}`;
+            console.error(error);
             return null;
           }
         });
 
         const movies = await Promise.all(moviePromises);
-        const validMovies = movies.filter((movie): movie is IMovieDetail => movie !== null);
-        
+        const validMovies = movies.filter(
+          (movie): movie is IMovieDetail => movie !== null
+        );
+
         setFavoriteMovies(validMovies);
       } catch (error) {
-        console.error("Fehler beim Laden der Favoriten:", error);
-        setError("Fehler beim Laden der Favoriten");
+        console.error(error);
+        setError("Failed to load favorite movies. Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -80,19 +82,29 @@ export default function Favorites() {
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
             <div className="w-24 h-24 mx-auto mb-6 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center">
-              <svg className="w-12 h-12 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-12 h-12 text-red-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
             </div>
             <h1 className="text-2xl font-bold text-[rgb(var(--text-primary))] mb-4">
-              Fehler beim Laden
+              Failed to load favorite movies
             </h1>
             <p className="text-red-500 mb-6">{error}</p>
             <button
               onClick={() => window.location.reload()}
               className="btn-primary"
             >
-              Erneut versuchen
+              try again
             </button>
           </div>
         </div>
@@ -107,31 +119,34 @@ export default function Favorites() {
           {/* Header */}
           <div className="mb-8">
             <h1 className="text-4xl font-bold text-[rgb(var(--text-primary))] mb-2">
-              Meine Favoriten
+              My Favorites
             </h1>
             <p className="text-[rgb(var(--text-secondary))] text-lg">
-              {favoriteMovies.length} {favoriteMovies.length === 1 ? 'Film' : 'Filme'} in deinen Favoriten
+              {favoriteMovies.length}{" "}
+              {favoriteMovies.length === 1 ? "Film" : "Filme"} in deinen
+              Favorite
             </p>
           </div>
 
           {favoriteMovies.length === 0 ? (
             <div className="text-center py-16">
               <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-red-100 to-pink-100 dark:from-red-900/20 dark:to-pink-900/20 rounded-full flex items-center justify-center">
-                <svg className="w-16 h-16 text-red-400" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                <svg
+                  className="w-16 h-16 text-red-400"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                 </svg>
               </div>
               <h2 className="text-2xl font-semibold text-[rgb(var(--text-primary))] mb-4">
-                Noch keine Favoriten
+                No favorite movies yet
               </h2>
               <p className="text-[rgb(var(--text-secondary))] mb-8 max-w-md mx-auto">
-                Entdecke tolle Filme und füge sie zu deinen Favoriten hinzu, um sie hier zu sehen!
+                You haven't added any movies to your favorites. Browse movies
               </p>
-              <NavLink
-                to="/"
-                className="btn-primary text-lg px-8 py-3"
-              >
-                Filme entdecken
+              <NavLink to="/" className="btn-primary text-lg px-8 py-3">
+                Browse Movies
               </NavLink>
             </div>
           ) : (
@@ -155,29 +170,15 @@ export default function Favorites() {
                     key={movie.id}
                     className="group relative card overflow-hidden hover:scale-105 transition-all duration-200"
                   >
-                    {/* Favoriten-Button */}
                     <button
                       onClick={() => handleToggleFavorite(movie.id)}
-                      className={`absolute top-3 right-3 z-10 p-2 rounded-full transition-all shadow-lg ${
-                        isFavorite
-                          ? "bg-red-500 text-white hover:bg-red-600"
-                          : "bg-[rgb(var(--bg-secondary))] text-[rgb(var(--text-muted))] hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-900/20"
-                      }`}
-                      aria-label={isFavorite ? "Aus Favoriten entfernen" : "Zu Favoriten hinzufügen"}
+                      className={`absolute top-3 right-3 z-10 p-2 rounded-full transition-all shadow-lg`}
                     >
-                      <svg
-                        className="w-5 h-5"
-                        fill={isFavorite ? "currentColor" : "none"}
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                        />
-                      </svg>
+                      <img
+                        src={isFavorite ? "/heart.png" : "/heart_no.png"}
+                        alt={isFavorite ? "Favorited" : "Not Favorited"}
+                        className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain"
+                      />
                     </button>
 
                     <NavLink
@@ -197,15 +198,21 @@ export default function Favorites() {
                         </h6>
                         <div className="flex items-center gap-2 text-xs text-[rgb(var(--text-secondary))]">
                           <div className="flex items-center gap-1">
-                            <svg className="w-3 h-3 text-yellow-400" fill="currentColor" viewBox="0 0 24 24">
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            <svg
+                              className="w-3 h-3 text-yellow-400"
+                              fill="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                             </svg>
                             <span>{movie.vote_average?.toFixed(1)}</span>
                           </div>
                           {movie.release_date && (
                             <>
                               <span>•</span>
-                              <span>{new Date(movie.release_date).getFullYear()}</span>
+                              <span>
+                                {new Date(movie.release_date).getFullYear()}
+                              </span>
                             </>
                           )}
                         </div>

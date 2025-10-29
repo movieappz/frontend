@@ -16,9 +16,7 @@ export default function CategoriesBtn() {
                 to={`/category/${category.id}`}
                 className={"!text-green-500"}
               >
-                <button className="btn whitespace-nowrap bg-transparent !text-white border-2 border-[--color-brand-border] hover:bg-[--color-brand-border]/40 focus:outline-none focus:ring-2 focus:ring-[--color-brand-border] px-3 py-1 rounded-md text-sm !active:text-[var(--color-brand-bg)]">
-                  {category.name}
-                </button>
+                <button className="btn-category">{category.name}</button>
               </NavLink>
             </li>
           );

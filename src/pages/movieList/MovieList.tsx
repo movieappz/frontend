@@ -36,13 +36,19 @@ export default function MoviePage() {
       {states.loading ? (
         <SkeletonGrid count={10} />
       ) : (
-        states.categories !== null && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {states?.movies?.map((movie) => (
-              <MovieItem key={movie.id} movie={movie} />
-            ))}
-          </div>
-        )
+        <>
+          {states?.movies && states.movies.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+              {states.movies.map((movie) => (
+                <MovieItem key={movie.id} movie={movie} />
+              ))}
+            </div>
+          ) : (
+            <div className="py-12 text-center text-[rgb(var(--text-secondary))]">
+              No results found.
+            </div>
+          )}
+        </>
       )}
       <div className="flex justify-between mt-4">
         <button

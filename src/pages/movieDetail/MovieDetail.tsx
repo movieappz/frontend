@@ -8,10 +8,12 @@ import {
 import type { IMovieTrailer } from "../../interfaces/IMovieTrailer";
 import axios from "axios";
 import SkeletonGrid from "../../components/SkeletonCard/SkeletonGrid";
+import { useTheme } from "../../context/ThemeProvider";
 
 export default function MovieDetail() {
   const { movieId } = useParams();
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const { states, fetchMovieDetail } = useContext(
     mainContext
@@ -75,13 +77,21 @@ export default function MovieDetail() {
           onClick={handleBack}
           className="btn bg-transparent text-[--color-brand-text] border-2 border-[--color-brand-border] hover:bg-[--color-brand-border]/40 px-3 py-1 rounded-md"
         >
-          ← Back
+          <img
+            src={theme === "light" ? "/back_l.png" : "/back.png"}
+            alt="Abmelden"
+            className="w-5 h-5"
+          />
         </button>
         <button
           onClick={fetchTrailer}
           className="btn bg-transparent text-[--color-brand-text] border-2 border-[--color-brand-border] hover:bg-[--color-brand-border]/40 px-3 py-1 rounded-md"
         >
-          {loadingTrailer ? "Loading..." : "Show Trailer"}
+          {loadingTrailer ? (
+            "Loading..."
+          ) : (
+            <img src={"/youtub.png"} alt="show trailer" className="w-9 h-9" />
+          )}
         </button>
       </div>
 

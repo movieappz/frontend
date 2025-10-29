@@ -22,14 +22,18 @@ export default function Layout() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[--color-brand-bg] text-[--color-brand-text]">
+    <div
+      className={`min-h-screen bg-[rgb(var(--bg-primary))] text-[rgb(var(--text-primary))]`}
+    >
       <Header />
       <div
         className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pb-6 lg:pb-8"
         style={{ paddingTop: headerHeight + 16 }}
       >
         <PageWrapper>
-          <Outlet />
+          <main className="flex flex-col">
+            <Outlet />
+          </main>
         </PageWrapper>
       </div>
       <Footer />

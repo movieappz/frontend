@@ -4,29 +4,31 @@ import ThemeToggle from "../themeToggle/ThemeToggle";
 import { Link, useNavigate } from "react-router";
 import { useUserStore } from "../../store/userStore";
 import { axiosPublic } from "../../utils/axiosConfig";
+import { useTheme } from "../../context/ThemeProvider";
 
 export default function Header() {
   const { user, logout } = useUserStore();
   const navigate = useNavigate();
+  const { theme } = useTheme();
 
   const handleLogout = async () => {
     try {
-      // Optional: Server-seitigen Logout aufrufen
       await axiosPublic.post("/logout", {}, { withCredentials: true });
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
-      // Lokalen Zustand zurücksetzen
       logout();
       navigate("/");
     }
   };
 
   return (
-    <header className="fixed top-0 inset-x-0 z-50 bg-[rgb(var(--bg-secondary))]/95 backdrop-blur-md border-b border-[rgb(var(--border))] shadow-sm">
+    <header
+      data-app-header
+      className="fixed top-0 inset-x-0 z-50 bg-[rgb(var(--bg-secondary))]/95 backdrop-blur-md border-b-2 border-[rgb(var(--border))] shadow-md"
+    >
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center gap-4 justify-between">
-          {/* Logo */}
           <div className="flex items-center gap-3">
             <Link
               to={"/"}
@@ -35,9 +37,6 @@ export default function Header() {
               <div className="w-10 h-10 bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-200">
                 <span className="text-white font-bold text-lg">M</span>
               </div>
-              <span className="text-xl font-bold text-[rgb(var(--text-primary))] hidden sm:block">
-                MovieApp
-              </span>
             </Link>
           </div>
 
@@ -47,7 +46,7 @@ export default function Header() {
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 sm:gap-4">
             {/* Theme Toggle */}
             <ThemeToggle />
 
@@ -55,37 +54,46 @@ export default function Header() {
               <div className="flex items-center gap-2">
                 <Link
                   to={"/login"}
-                  className="btn-secondary text-sm"
-                  aria-label="Anmelden"
+                  className="h-8 w-8 flex items-center justify-center"
+                  aria-label="login"
                 >
-                  Anmelden
+                  <img
+                    src={theme === "light" ? "/signin_l.png" : "/signin.png"}
+                    alt="Abmelden"
+                    className="w-5 h-5"
+                  />
                 </Link>
                 <Link
                   to={"/signup"}
-                  className="btn-primary text-sm"
-                  aria-label="Registrieren"
+                  className="h-8 w-8 flex items-center justify-center"
+                  aria-label="signup"
                 >
-                  Registrieren
+                  <img
+                    src={theme === "light" ? "/signup_d.png" : "/signup.png"}
+                    alt="signup"
+                    className="w-5 h-5"
+                  />
                 </Link>
               </div>
             ) : (
               <div className="flex items-center gap-3">
-                <span className="text-sm text-[rgb(var(--text-secondary))] hidden lg:block">
-                  Hallo, <span className="font-medium text-[rgb(var(--text-primary))]">{user.username}</span>
-                </span>
                 <Link
-                  to={"/dashboard"}
-                  className="btn-secondary text-sm"
-                  aria-label="Dashboard"
+                  to="/dashboard"
+                  className="text-[#344e41] dark:!text-[#70012b] !no-underline"
                 >
-                  Dashboard
+                  <img
+                    src={theme === "light" ? "/home.png" : "/home_two.png"}
+                    alt="Abmelden"
+                    className="w-5 h-5"
+                  />
                 </Link>
-                <button
-                  onClick={handleLogout}
-                  className="btn-secondary text-sm hover:bg-red-50 hover:border-red-200 hover:text-red-600 dark:hover:bg-red-900/20 dark:hover:border-red-800 dark:hover:text-red-400"
-                  aria-label="Abmelden"
-                >
-                  Abmelden
+
+                <button onClick={handleLogout} aria-label="Abmelden">
+                  <img
+                    src={theme === "light" ? "/logout.png" : "/logout_d.png"}
+                    alt="Abmelden"
+                    className="w-5 h-5"
+                  />
                 </button>
               </div>
             )}

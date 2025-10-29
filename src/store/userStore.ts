@@ -53,11 +53,9 @@ export const useUserStore = create<IUserStore>()(
                 set({ isLoading: true, isInitialized: true });
 
                 try {
-                    const resp = await axiosPublic.get("/currentUser", {
+                    const resp = await axiosPublic.get("/auth/currentUser", {
                         withCredentials: true,
                     });
-
-                    console.log("Response from /currentUser:", resp.data);
 
                     if (resp.data && resp.data._id) {
                         set({
