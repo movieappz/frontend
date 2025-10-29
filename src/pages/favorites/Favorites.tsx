@@ -5,9 +5,10 @@ import { NavLink } from "react-router";
 import { genreFunction } from "../../functions/genreFunction";
 import { mainContext, type MainContextProps } from "../../context/MainProvider";
 import axios from "axios";
+import MovieItem from "../../components/movieItem/MovieItem";
 
 const AUTH_HEADER = {
-  Authorization: `Bearer ${import.meta.env.VITE_KEY_BAREAR}`,
+  Authorization: 'Bearer ' + String(import.meta.env.VITE_KEY_BAREAR),
 };
 
 export default function Favorites() {
@@ -113,122 +114,46 @@ export default function Favorites() {
   }
 
   return (
-    <div className="min-h-screen bg-[rgb(var(--bg-primary))] pt-24">
-      <div className="container mx-auto px-4 py-8">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-[rgb(var(--text-primary))] mb-2">
-              My Favorites
-            </h1>
-            <p className="text-[rgb(var(--text-secondary))] text-lg">
-              {favoriteMovies.length}{" "}
-              {favoriteMovies.length === 1 ? "Film" : "Filme"} in deinen
-              Favorite
-            </p>
-          </div>
-
-          {favoriteMovies.length === 0 ? (
-            <div className="text-center py-16">
-              <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-red-100 to-pink-100 dark:from-red-900/20 dark:to-pink-900/20 rounded-full flex items-center justify-center">
-                <svg
-                  className="w-16 h-16 text-red-400"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-              </div>
-              <h2 className="text-2xl font-semibold text-[rgb(var(--text-primary))] mb-4">
-                No favorite movies yet
-              </h2>
-              <p className="text-[rgb(var(--text-secondary))] mb-8 max-w-md mx-auto">
-                You haven't added any movies to your favorites. Browse movies
-              </p>
-              <NavLink to="/" className="btn-primary text-lg px-8 py-3">
-                Browse Movies
-              </NavLink>
-            </div>
-          ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6">
-              {favoriteMovies.map((movie) => {
-                const imageUrl = movie.poster_path
-                  ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                  : "https://via.placeholder.com/500x750?text=No+Image";
-
-                const title =
-                  movie.title ||
-                  movie.name ||
-                  movie.original_title ||
-                  movie.original_name ||
-                  "Unbekannt";
-
-                const isFavorite = user?.favorites?.includes(movie.id) || false;
-
-                return (
-                  <div
-                    key={movie.id}
-                    className="group relative card overflow-hidden hover:scale-105 transition-all duration-200"
-                  >
-                    <button
-                      onClick={() => handleToggleFavorite(movie.id)}
-                      className={`absolute top-3 right-3 z-10 p-2 rounded-full transition-all shadow-lg`}
-                    >
-                      <img
-                        src={isFavorite ? "/heart.png" : "/heart_no.png"}
-                        alt={isFavorite ? "Favorited" : "Not Favorited"}
-                        className="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 lg:w-10 lg:h-10 object-contain"
-                      />
-                    </button>
-
-                    <NavLink
-                      to={`/detail/${movie.id}`}
-                      className="block !text-[rgb(var(--text-primary))] !no-underline"
-                    >
-                      <div className="aspect-[2/3] w-full overflow-hidden">
-                        <img
-                          src={imageUrl}
-                          alt={title}
-                          className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
-                        />
-                      </div>
-                      <div className="p-4">
-                        <h6 className="text-sm font-semibold leading-snug truncate mb-2">
-                          {title}
-                        </h6>
-                        <div className="flex items-center gap-2 text-xs text-[rgb(var(--text-secondary))]">
-                          <div className="flex items-center gap-1">
-                            <svg
-                              className="w-3 h-3 text-yellow-400"
-                              fill="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                            </svg>
-                            <span>{movie.vote_average?.toFixed(1)}</span>
-                          </div>
-                          {movie.release_date && (
-                            <>
-                              <span>•</span>
-                              <span>
-                                {new Date(movie.release_date).getFullYear()}
-                              </span>
-                            </>
-                          )}
-                        </div>
-                        {genreFunction(movie.genre_ids, states.categories) && (
-                          <p className="text-xs text-[rgb(var(--text-muted))] mt-1 truncate">
-                            {genreFunction(movie.genre_ids, states.categories)}
-                          </p>
-                        )}
-                      </div>
-                    </NavLink>
-                  </div>
-                );
-              })}
-            </div>
-          )}
+    <div className="container-responsive">
+      <div className="max-w-7xl mx-auto">
+        
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-[rgb(var(--text-primary))] mb-2">
+            My Favorites
+          </h1>
+          <p className="text-[rgb(var(--text-secondary))] text-lg">
+            {favoriteMovies.length} {favoriteMovies.length === 1 ? "Film" : "Filme"} in deinen Favorite
+          </p>
         </div>
+
+        {favoriteMovies.length === 0 ? (
+          <div className="text-center py-16">
+            <div className="w-32 h-32 mx-auto mb-8 bg-gradient-to-br from-red-100 to-pink-100 dark:from-red-900/20 dark:to-pink-900/20 rounded-full flex items-center justify-center">
+              <svg
+                className="w-16 h-16 text-red-400"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+              </svg>
+            </div>
+            <h2 className="text-2xl font-semibold text-[rgb(var(--text-primary))] mb-4">
+              No favorite movies yet
+            </h2>
+            <p className="text-[rgb(var(--text-secondary))] mb-8 max-w-md mx-auto">
+              You haven't added any movies to your favorites. Browse movies
+            </p>
+            <NavLink to="/" className="btn-primary text-lg px-8 py-3">
+              Browse Movies
+            </NavLink>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            {favoriteMovies.map((movie) => (
+              <MovieItem key={movie.id} movie={movie} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

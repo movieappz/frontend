@@ -9,11 +9,13 @@ import type { IMovieTrailer } from "../../interfaces/IMovieTrailer";
 import axios from "axios";
 import SkeletonGrid from "../../components/SkeletonCard/SkeletonGrid";
 import { useTheme } from "../../context/ThemeProvider";
+import { useUserStore } from "../../store/userStore";
 
 export default function MovieDetail() {
   const { movieId } = useParams();
   const navigate = useNavigate();
   const { theme } = useTheme();
+  const { user, toggleFavorite } = useUserStore();
 
   const { states, fetchMovieDetail } = useContext(
     mainContext
@@ -49,6 +51,14 @@ export default function MovieDetail() {
 
   const handleBack = () => navigate(-1);
 
+  const isFavorite = movie && user?.favorites?.includes(movie.id || -1);
+
+  const handleToggleFavorite = () => {
+    if (movie && user) {
+      toggleFavorite(movie.id);
+    }
+  };
+
   const fetchTrailer = async () => {
     if (!movieId) return;
     try {
@@ -83,6 +93,20 @@ export default function MovieDetail() {
             className="w-5 h-5"
           />
         </button>
+        {user && movie && (
+          <button
+            onClick={handleToggleFavorite}
+            className="btn !bg-[rgb(var(--bg-secondary))]/30 hover:!bg-[rgb(var(--bg-secondary))]/50 !text-[--color-brand-text] px-3 py-1 rounded-md"
+            aria-label={isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"}
+            title={isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"}
+          >
+            <img
+              src={isFavorite ? "/heart.png" : "/heart_no.png"}
+              alt={isFavorite ? "Favorisiert" : "Nicht favorisiert"}
+              className="w-6 h-6"
+            />
+          </button>
+        )}
         <button
           onClick={fetchTrailer}
           className="btn bg-transparent text-[--color-brand-text] border-2 border-[--color-brand-border] hover:bg-[--color-brand-border]/40 px-3 py-1 rounded-md"
