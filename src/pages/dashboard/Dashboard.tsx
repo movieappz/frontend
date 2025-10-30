@@ -1,15 +1,55 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/userStore";
 import { NavLink } from "react-router";
 
 export default function Dashboard() {
   const { user, isLoading, reloadUser } = useUserStore();
+  const [isEditing, setIsEditing] = useState(false);
+  const [newUsername, setNewUsername] = useState("");
+  const [profileImage, setProfileImage] = useState<string | null>(null);
+  const [isUploading, setIsUploading] = useState(false);
 
   useEffect(() => {
     if (!user && !isLoading) {
       reloadUser();
     }
+    if (user) {
+      setNewUsername(user.username);
+    }
   }, [user, isLoading, reloadUser]);
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+
+    setTimeout(() => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result as string);
+        setIsUploading(false);
+      };
+      reader.readAsDataURL(file);
+    }, 1000);
+
+    // In einer echten Implementierung würden wir das Bild zum Server hochladen:
+    // const formData = new FormData();
+    // formData.append('profileImage', file);
+    // axios.post('/api/users/profile-image', formData)
+    //   .then(response => {
+    //     setProfileImage(response.data.imageUrl);
+    //     setIsUploading(false);
+    //   })
+    //   .catch(error => {
+    //     console.error('Error uploading image:', error);
+    //     setIsUploading(false);
+    //   });
+  };
+
+  const handleUpdateUsername = () => {
+    setIsEditing(false);
+  };
 
   if (isLoading) {
     return (
@@ -28,7 +68,7 @@ export default function Dashboard() {
       <div className="min-h-screen bg-[rgb(var(--bg-primary))] pt-24">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <div className="w-24 h-24 mx-auto mb-6 bg-[rgb(var(--bg-tertiary))] rounded-full flex items-center justify-center">
+            <div className="w-24 h-24 mx-auto mb-6 bg-[rgb(var(--bg-tertiary))] rounded-full flex items-center justify-center shadow-lg">
               <svg
                 className="w-12 h-12 text-[rgb(var(--text-muted))]"
                 fill="none"
@@ -43,10 +83,10 @@ export default function Dashboard() {
                 />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-[rgb(var(--text-primary))] mb-4">
+            <h1 className="text-2xl font-bold text-[rgb(var(--text-primary))] mb-4 animate-fadeIn">
               you are not logged in
             </h1>
-            <p className="text-[rgb(var(--text-secondary))]">
+            <p className="text-[rgb(var(--text-secondary))] animate-slideUp">
               sign in to access your dashboard
             </p>
           </div>
@@ -61,44 +101,130 @@ export default function Dashboard() {
     <div className="min-h-screen bg-[rgb(var(--bg-primary))] pt-24">
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
-          {/* Welcome Section */}
-          <div className="mb-8">
-            <h1 className="text-4xl font-bold text-[rgb(var(--text-primary))] mb-2">
+          {/* Welcome Section with Animation */}
+          <div className="mb-8 animate-fadeIn">
+            <h1 className="text-4xl font-bold text-[rgb(var(--text-primary))] mb-2 animate-slideUp">
               Welcome back {user.username}
             </h1>
           </div>
 
-          <div className="card p-6 mb-8">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-full flex items-center justify-center">
-                <span className="text-white font-bold text-xl">
-                  {user.username.charAt(0).toUpperCase()}
-                </span>
+          {/* Profile Card with Shadow and Animation */}
+          <div className="card p-8 mb-8 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))]">
+            <div className="flex flex-col md:flex-row items-center gap-6 mb-6">
+              {/* Profile Image with Upload */}
+              <div className="relative group">
+                <div className="w-24 h-24 rounded-full overflow-hidden shadow-lg border-2 border-[rgb(var(--accent-primary))] transition-transform duration-300 hover:scale-105">
+                  {profileImage ? (
+                    <img
+                      src={profileImage}
+                      alt={user.username}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] flex items-center justify-center">
+                      <span className="text-white font-bold text-2xl">
+                        {user.username.charAt(0).toUpperCase()}
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity duration-300">
+                  {isUploading ? (
+                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                  ) : (
+                    <span>Upload</span>
+                  )}
+                  <input
+                    type="file"
+                    className="hidden"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={isUploading}
+                  />
+                </label>
               </div>
-              <div>
+
+              {/* User Info with Edit Option */}
+              <div className="flex-1">
+                <div className="flex items-center gap-3 mb-2">
+                  {isEditing ? (
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        value={newUsername}
+                        onChange={(e) => setNewUsername(e.target.value)}
+                        className="px-3 py-1 rounded border border-[rgb(var(--border))] bg-[rgb(var(--bg-primary))] text-[rgb(var(--text-primary))]"
+                      />
+                      <button
+                        onClick={handleUpdateUsername}
+                        className="px-3 py-1 bg-[rgb(var(--accent-primary))] text-white rounded hover:bg-opacity-90 transition-colors"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => {
+                          setIsEditing(false);
+                          setNewUsername(user.username);
+                        }}
+                        className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-opacity-90 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  ) : (
+                    <>
+                      <h2 className="text-xl font-bold text-[rgb(var(--text-primary))]">
+                        {user.username}
+                      </h2>
+                      <button
+                        onClick={() => setIsEditing(true)}
+                        className="text-[rgb(var(--accent-primary))] hover:text-opacity-80 transition-colors"
+                      >
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                          />
+                        </svg>
+                      </button>
+                    </>
+                  )}
+                </div>
                 <p className="text-[rgb(var(--text-secondary))]">
                   {user.email}
                 </p>
-              </div>
-            </div>
-            <div className="flex items-center gap-6 text-sm">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 bg-[rgb(var(--accent-primary))] rounded-full"></div>
-                <span className="text-[rgb(var(--text-secondary))]">
-                  {favoriteCount}{" "}
-                  {favoriteCount === 1 ? "Favorit" : "Favoriten"}
-                </span>
+                <div className="mt-3 flex items-center gap-3">
+                  <div className="flex items-center gap-2 bg-[rgb(var(--accent-primary))] bg-opacity-10 px-3 py-1 rounded-full">
+                    <div className="w-2 h-2 bg-[rgb(var(--accent-primary))] rounded-full"></div>
+                    <span className="text-[rgb(var(--text-secondary))]">
+                      {favoriteCount}{" "}
+                      {favoriteCount === 1 ? "Favorit" : "Favoriten"}
+                    </span>
+                  </div>
+                  <div className="text-sm text-[rgb(var(--text-muted))]">
+                    Mitglied seit{" "}
+                    {new Date(user.createdAt).toLocaleDateString()}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
 
+          {/* Cards Grid with Enhanced Animations and Shadows */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <NavLink
               to="/favorites"
-              className="group card p-6 hover:scale-105 transition-all duration-200 !no-underline"
+              className="group card p-6 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] hover:scale-105 !no-underline transform hover:-translate-y-1"
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <svg
                     className="w-6 h-6 text-white"
                     fill="currentColor"
@@ -108,7 +234,7 @@ export default function Dashboard() {
                   </svg>
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold !no-underline">
+                  <h3 className="text-lg font-semibold !no-underline text-[rgb(var(--text-primary))]">
                     Your Favorites
                   </h3>
                   <p className="text-sm text-[rgb(var(--text-secondary))]">
@@ -125,10 +251,10 @@ export default function Dashboard() {
 
             <NavLink
               to="/"
-              className="group card p-6 hover:scale-105 transition-all duration-200 !no-underline"
+              className="group card p-6 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] hover:scale-105 !no-underline transform hover:-translate-y-1"
             >
               <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
+                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
                   <svg
                     className="w-6 h-6 text-white"
                     fill="none"
@@ -154,50 +280,6 @@ export default function Dashboard() {
                 Discover the latest movies added to our collection
               </p>
             </NavLink>
-
-            <div className="card p-6">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-teal-500 rounded-xl flex items-center justify-center">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-[rgb(var(--text-primary))]">
-                    Statistics
-                  </h3>
-                  <p className="text-sm text-[rgb(var(--text-secondary))]">
-                    Your account statistics
-                  </p>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-[rgb(var(--text-secondary))]">
-                    Favorite:
-                  </span>
-                  <span className="font-medium text-[rgb(var(--text-primary))]">
-                    {favoriteCount}
-                  </span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span className="text-[rgb(var(--text-secondary))]">
-                    Member since:{" "}
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </div>

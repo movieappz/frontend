@@ -1,19 +1,17 @@
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/userStore";
 import type { IMovieDetail } from "../../interfaces/IMovieDetail";
 import { NavLink } from "react-router";
-import { genreFunction } from "../../functions/genreFunction";
-import { mainContext, type MainContextProps } from "../../context/MainProvider";
+
 import axios from "axios";
 import MovieItem from "../../components/movieItem/MovieItem";
 
 const AUTH_HEADER = {
-  Authorization: 'Bearer ' + String(import.meta.env.VITE_KEY_BAREAR),
+  Authorization: "Bearer " + String(import.meta.env.VITE_KEY_BAREAR),
 };
 
 export default function Favorites() {
-  const { user, toggleFavorite } = useUserStore();
-  const { states } = useContext(mainContext) as MainContextProps;
+  const { user } = useUserStore();
   const [favoriteMovies, setFavoriteMovies] = useState<IMovieDetail[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -60,10 +58,6 @@ export default function Favorites() {
 
     fetchFavoriteMovies();
   }, [user?.favorites]);
-
-  const handleToggleFavorite = (movieId: number) => {
-    toggleFavorite(movieId);
-  };
 
   if (isLoading) {
     return (
@@ -116,13 +110,13 @@ export default function Favorites() {
   return (
     <div className="container-responsive">
       <div className="max-w-7xl mx-auto">
-        
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-[rgb(var(--text-primary))] mb-2">
             My Favorites
           </h1>
           <p className="text-[rgb(var(--text-secondary))] text-lg">
-            {favoriteMovies.length} {favoriteMovies.length === 1 ? "Film" : "Filme"} in deinen Favorite
+            {favoriteMovies.length}{" "}
+            {favoriteMovies.length === 1 ? "Movie" : "Movies"} in your favorites
           </p>
         </div>
 

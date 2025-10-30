@@ -49,6 +49,25 @@
     @apply bg-[rgb(var(--bg-secondary))] hover:bg-[rgb(var(--bg-tertiary))] text-[rgb(var(--text-primary))] border border-[rgb(var(--border))] font-medium px-4 py-2 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md;
   }
 
+  /* Animationen für das Dashboard */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.8s ease-in-out;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.8s ease-out;
+  }
+
   .card {
     @apply bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] rounded-xl shadow-sm hover:shadow-md transition-all duration-200;
   }
