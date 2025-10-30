@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_URL || "http://localhost:2000";
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:2000" || "https://mybackend-moviez.vercel.app/";
 
 export const axiosPublic = axios.create({
     baseURL,
