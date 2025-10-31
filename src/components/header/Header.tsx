@@ -100,16 +100,16 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Search - Mobile */}
-        <div className="md:hidden mt-4">
-          <Search />
-        </div>
-
         {/* Categories */}
-        <div className="mt-4 -mx-1">
+        <div className="mt-2">
           <div className="overflow-x-auto no-scrollbar px-1">
             <CategoriesBtn />
           </div>
+        </div>
+
+        {/* Search - Mobile */}
+        <div className="md:hidden mt-4">
+          <Search />
         </div>
       </div>
     </header>

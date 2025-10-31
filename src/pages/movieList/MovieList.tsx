@@ -4,12 +4,15 @@ import { mainContext, type MainContextProps } from "../../context/MainProvider";
 import MovieItem from "../../components/movieItem/MovieItem";
 import { useNavigate } from "react-router";
 import SkeletonGrid from "../../components/SkeletonCard/SkeletonGrid";
+import { useTheme } from "../../context/ThemeProvider";
 
 export default function MoviePage() {
   const { states, nextPage, prevPage } = useContext(
     mainContext
   ) as MainContextProps;
   const navigate = useNavigate();
+
+  const { theme } = useTheme();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -56,11 +59,27 @@ export default function MoviePage() {
           onClick={prevPage}
           className="px-4 py-2 bg-gray-300 rounded disabled:opacity-50"
         >
-          Prev Page
+          <img
+            src={
+              theme === "light"
+                ? "/previous-page-light-mode.png"
+                : "/previous-page-dark-mode.png"
+            }
+            alt="back page"
+            className="w-5 h-5"
+          />
         </button>
-        <span className="px-4 py-2">Page {states.page}</span>
+        <span className="px-4 py-2">{states.page}</span>
         <button onClick={nextPage} className="px-4 py-2 bg-gray-300 rounded">
-          Next Page
+          <img
+            src={
+              theme === "light"
+                ? "/next-page-light-mode.png"
+                : "/next-page-dark-mode.png"
+            }
+            alt="next page"
+            className="w-5 h-5"
+          />
         </button>
       </div>
     </div>

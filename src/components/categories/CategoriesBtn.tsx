@@ -8,7 +8,7 @@ export default function CategoriesBtn() {
 
   return (
     <>
-      <ul className="flex gap-2 overflow-x-auto no-scrollbar py-2">
+      <ul className="flex gap-2 overflow-x-auto no-scrollbar pt-2 p-0 m-0">
         {states.categories.map((category: ICategory) => {
           return (
             <li key={category.id} className="shrink-0">
