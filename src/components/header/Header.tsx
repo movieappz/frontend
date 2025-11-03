@@ -88,7 +88,7 @@ export default function Header() {
                   />
                 </Link>
 
-                <button onClick={handleLogout} aria-label="Abmelden">
+                <button onClick={handleLogout} aria-label="logout">
                   <img
                     src={theme === "light" ? "/logout.png" : "/logout_d.png"}
                     alt="Abmelden"

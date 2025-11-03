@@ -32,7 +32,6 @@ export default function MovieItem({ movie }: MovieItemProps) {
 
   return (
     <div className="group relative card overflow-hidden hover:!scale-105 transition-all duration-200">
-      {/* Bild + Hover Overlay */}
       <NavLink
         to={`/detail/${movie.id}`}
         className="block !text-[rgb(var(--text-primary))] !no-underline"
@@ -44,7 +43,6 @@ export default function MovieItem({ movie }: MovieItemProps) {
             className="h-full w-full object-cover transition-transform duration-300 group-hover:!scale-110"
           />
 
-          {/* Overlay */}
           <div className="pointer-events-none absolute inset-0 z-20 opacity-0 group-hover:!opacity-100 transition-opacity duration-300">
             <div className="absolute inset-0 !bg-black/60 md:!bg-gradient-to-t md:!from-black/80 md:!via-black/50 md:!to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4 !text-white drop-shadow">

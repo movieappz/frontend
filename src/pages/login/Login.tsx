@@ -31,13 +31,13 @@ export default function Login() {
         setUser(resp.data.loggingUser);
         navigate("/dashboard");
       } else {
-        setError("Login fehlgeschlagen. Bitte versuchen Sie es erneut.");
+        setError("Login failed. Please try again.");
       }
     } catch (error: any) {
       console.error(error);
       setError(
         error.response?.data?.errors?.[0]?.message ||
-          "Login fehlgeschlagen. Bitte versuchen Sie es erneut."
+          "Login failed. Please try again."
       );
     } finally {
       setIsLoading(false);

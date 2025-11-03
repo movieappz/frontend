@@ -97,7 +97,9 @@ export default function MovieDetail() {
           <button
             onClick={handleToggleFavorite}
             className="btn !bg-[rgb(var(--bg-secondary))]/30 hover:!bg-[rgb(var(--bg-secondary))]/50 !text-[--color-brand-text] px-3 py-1 rounded-md"
-            aria-label={isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"}
+            aria-label={
+              isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"
+            }
             title={isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"}
           >
             <img
@@ -180,7 +182,6 @@ export default function MovieDetail() {
                 className="absolute inset-0 h-full w-full"
                 src={`https://www.youtube.com/embed/${trailerKey}`}
                 title="YouTube video player"
-                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowFullScreen
               ></iframe>

@@ -64,7 +64,7 @@ export default function MainProvider({
         payload: { query, movies: resp.data.results ?? [] },
       });
     } catch (error) {
-      dispatch({ type: "FETCH_ERROR", payload: "Fehler bei der Suche" });
+      dispatch({ type: "FETCH_ERROR", payload: "Failed by searching...  " });
     }
   };
 
@@ -135,7 +135,7 @@ export default function MainProvider({
           } catch (error) {}
         }
       } catch (error) {
-        dispatch({ type: "FETCH_ERROR", payload: "Fehler beim Initial-Fetch" });
+        dispatch({ type: "FETCH_ERROR", payload: "Failed by categories" });
       }
     };
 
