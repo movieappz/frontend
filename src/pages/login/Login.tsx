@@ -21,8 +21,6 @@ export default function Login() {
       password: string;
     };
 
-    console.log(LoginData);
-
     try {
       const resp = await axiosPublic.post("/auth/login", LoginData, {
         headers: { "Content-Type": "application/json" },
@@ -30,7 +28,6 @@ export default function Login() {
       });
 
       if (resp.data.loggingUser) {
-        console.log(resp.data.loggingUser);
         setUser(resp.data.loggingUser);
         navigate("/dashboard");
       } else {
