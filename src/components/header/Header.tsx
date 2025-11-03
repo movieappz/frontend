@@ -13,7 +13,7 @@ export default function Header() {
 
   const handleLogout = async () => {
     try {
-      await axiosPublic.post("/logout", {}, { withCredentials: true });
+      await axiosPublic.post("/auth/logout", {}, { withCredentials: true });
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
