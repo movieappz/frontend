@@ -13,7 +13,7 @@ export default function ThemeToggle() {
         <svg
           className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
             theme === "light"
-              ? "opacity-100 rotate-0 scale-100 text-[#132a13]"
+              ? "opacity-100 rotate-0 scale-100 !text-[rgb(var(--text-primary))]"
               : "opacity-0 rotate-90 scale-75"
           }`}
           fill="none"
@@ -28,7 +28,7 @@ export default function ThemeToggle() {
         <svg
           className={`absolute inset-0 w-6 h-6 transition-all duration-300 ${
             theme === "dark"
-              ? "opacity-100 rotate-0 scale-100 text-[#70012b]"
+              ? "opacity-100 rotate-0 scale-100 !text-white"
               : "opacity-0 -rotate-90 scale-75"
           }`}
           fill="none"
@@ -42,4 +42,3 @@ export default function ThemeToggle() {
     </button>
   );
 }
-

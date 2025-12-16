@@ -1,6 +1,17 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/userStore";
 import { NavLink } from "react-router";
+import {
+  HeartFilledIcon,
+  VideoIcon,
+  StarFilledIcon,
+  ClockIcon,
+  ActivityLogIcon,
+  Pencil1Icon,
+  CheckIcon,
+  Cross2Icon,
+  UploadIcon,
+} from "@radix-ui/react-icons";
 
 export default function Dashboard() {
   const { user, isLoading, reloadUser } = useUserStore();
@@ -98,22 +109,77 @@ export default function Dashboard() {
   const favoriteCount = user.favorites?.length || 0;
 
   return (
-    <div className="min-h-screen bg-[rgb(var(--bg-primary))] pt-24">
+    <div className="min-h-screen bg-[rgb(var(--bg-primary))] pt-24 pb-12">
       <div className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Welcome Section with Animation */}
           <div className="mb-8 animate-fadeIn">
-            <h1 className="text-4xl font-bold text-[rgb(var(--text-primary))] mb-2 animate-slideUp">
-              Welcome back {user.username}
+            <h1 className="text-4xl md:text-5xl font-bold !text-[rgb(var(--text-primary))] mb-2 animate-slideUp">
+              Willkommen zurück, {user.username}!
             </h1>
+            <p className="!text-[rgb(var(--text-secondary))] text-lg">
+              Hier ist deine persönliche Übersicht
+            </p>
+          </div>
+
+          {/* Statistics Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl p-6 shadow-lg text-white">
+              <div className="flex items-center justify-between mb-2">
+                <HeartFilledIcon className="w-8 h-8" />
+                <span className="text-3xl font-bold">{favoriteCount}</span>
+              </div>
+              <p className="text-sm opacity-90">Favoriten</p>
+            </div>
+
+            <div className="bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] rounded-xl p-6 shadow-lg">
+              <div className="flex items-center justify-between mb-2">
+                <VideoIcon className="w-8 h-8 !text-[rgb(var(--text-primary))]" />
+                <span className="text-3xl font-bold !text-[rgb(var(--text-primary))]">
+                  0
+                </span>
+              </div>
+              <p className="text-sm !text-[rgb(var(--text-secondary))]">
+                Angesehen
+              </p>
+            </div>
+
+            <div className="bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] rounded-xl p-6 shadow-lg">
+              <div className="flex items-center justify-between mb-2">
+                <ClockIcon className="w-8 h-8 !text-[rgb(var(--text-primary))]" />
+                <span className="text-3xl font-bold !text-[rgb(var(--text-primary))]">
+                  0h
+                </span>
+              </div>
+              <p className="text-sm !text-[rgb(var(--text-secondary))]">
+                Watchtime
+              </p>
+            </div>
+
+            <div className="bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] rounded-xl p-6 shadow-lg">
+              <div className="flex items-center justify-between mb-2">
+                <StarFilledIcon className="w-8 h-8 !text-[rgb(var(--text-primary))]" />
+                <span className="text-3xl font-bold !text-[rgb(var(--text-primary))]">
+                  0
+                </span>
+              </div>
+              <p className="text-sm !text-[rgb(var(--text-secondary))]">
+                Bewertungen
+              </p>
+            </div>
           </div>
 
           {/* Profile Card with Shadow and Animation */}
-          <div className="card p-8 mb-8 shadow-xl hover:shadow-2xl transition-all duration-300 rounded-xl bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))]">
-            <div className="flex flex-col md:flex-row items-center gap-6 mb-6">
+          <div className="bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] p-8 mb-8 shadow-xl rounded-xl">
+            <h2 className="text-2xl font-bold !text-[rgb(var(--text-primary))] mb-6 flex items-center gap-2">
+              <ActivityLogIcon className="w-6 h-6" />
+              Profil Details
+            </h2>
+
+            <div className="flex flex-col md:flex-row items-start gap-8">
               {/* Profile Image with Upload */}
               <div className="relative group">
-                <div className="w-24 h-24 rounded-full overflow-hidden shadow-lg border-2 border-[rgb(var(--accent-primary))] transition-transform duration-300 hover:scale-105">
+                <div className="w-32 h-32 rounded-2xl overflow-hidden shadow-lg border-4 border-[rgb(var(--accent-primary))] transition-transform duration-300 hover:scale-105">
                   {profileImage ? (
                     <img
                       src={profileImage}
@@ -122,17 +188,20 @@ export default function Dashboard() {
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] flex items-center justify-center">
-                      <span className="text-white font-bold text-2xl">
+                      <span className="text-white font-bold text-4xl">
                         {user.username.charAt(0).toUpperCase()}
                       </span>
                     </div>
                   )}
                 </div>
-                <label className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 text-white opacity-0 group-hover:opacity-100 rounded-full cursor-pointer transition-opacity duration-300">
+                <label className="absolute inset-0 flex flex-col items-center justify-center bg-black bg-opacity-70 text-white opacity-0 group-hover:opacity-100 rounded-2xl cursor-pointer transition-opacity duration-300">
                   {isUploading ? (
-                    <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                    <div className="animate-spin h-6 w-6 border-2 border-white border-t-transparent rounded-full"></div>
                   ) : (
-                    <span>Upload</span>
+                    <>
+                      <UploadIcon className="w-6 h-6 mb-1" />
+                      <span className="text-xs">Upload</span>
+                    </>
                   )}
                   <input
                     type="file"
@@ -145,141 +214,129 @@ export default function Dashboard() {
               </div>
 
               {/* User Info with Edit Option */}
-              <div className="flex-1">
-                <div className="flex items-center gap-3 mb-2">
-                  {isEditing ? (
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="text"
-                        value={newUsername}
-                        onChange={(e) => setNewUsername(e.target.value)}
-                        className="px-3 py-1 rounded border border-[rgb(var(--border))] bg-[rgb(var(--bg-primary))] text-[rgb(var(--text-primary))]"
-                      />
-                      <button
-                        onClick={handleUpdateUsername}
-                        className="px-3 py-1 bg-[rgb(var(--accent-primary))] text-white rounded hover:bg-opacity-90 transition-colors"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => {
-                          setIsEditing(false);
-                          setNewUsername(user.username);
-                        }}
-                        className="px-3 py-1 bg-gray-500 text-white rounded hover:bg-opacity-90 transition-colors"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  ) : (
-                    <>
-                      <h2 className="text-xl font-bold text-[rgb(var(--text-primary))]">
-                        {user.username}
-                      </h2>
-                      <button
-                        onClick={() => setIsEditing(true)}
-                        className="text-[rgb(var(--accent-primary))] hover:text-opacity-80 transition-colors"
-                      >
-                        <svg
-                          className="w-4 h-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
+              <div className="flex-1 space-y-4">
+                <div>
+                  <label className="text-sm !text-[rgb(var(--text-secondary))] mb-1 block">
+                    Username
+                  </label>
+                  <div className="flex items-center gap-3">
+                    {isEditing ? (
+                      <div className="flex items-center gap-2 flex-1">
+                        <input
+                          type="text"
+                          value={newUsername}
+                          onChange={(e) => setNewUsername(e.target.value)}
+                          className="input flex-1 !text-[rgb(var(--text-primary))]"
+                        />
+                        <button
+                          onClick={handleUpdateUsername}
+                          className="p-2 bg-[rgb(var(--accent-primary))] text-white rounded-lg hover:opacity-90 transition-opacity"
                         >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                          />
-                        </svg>
-                      </button>
-                    </>
-                  )}
+                          <CheckIcon className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => {
+                            setIsEditing(false);
+                            setNewUsername(user.username);
+                          }}
+                          className="p-2 bg-gray-500 text-white rounded-lg hover:opacity-90 transition-opacity"
+                        >
+                          <Cross2Icon className="w-5 h-5" />
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <span className="text-xl font-semibold !text-[rgb(var(--text-primary))] flex-1">
+                          {user.username}
+                        </span>
+                        <button
+                          onClick={() => setIsEditing(true)}
+                          className="p-2 !text-[rgb(var(--accent-primary))] hover:bg-[rgb(var(--accent-primary))]/10 rounded-lg transition-colors"
+                        >
+                          <Pencil1Icon className="w-4 h-4" />
+                        </button>
+                      </>
+                    )}
+                  </div>
                 </div>
-                <p className="text-[rgb(var(--text-secondary))]">
-                  {user.email}
-                </p>
-                <div className="mt-3 flex items-center gap-3">
-                  <div className="flex items-center gap-2 bg-[rgb(var(--accent-primary))] bg-opacity-10 px-3 py-1 rounded-full">
-                    <div className="w-2 h-2 bg-[rgb(var(--accent-primary))] rounded-full"></div>
-                    <span className="text-[rgb(var(--text-secondary))]">
-                      {favoriteCount}{" "}
-                      {favoriteCount === 1 ? "Favorit" : "Favoriten"}
-                    </span>
-                  </div>
-                  <div className="text-sm text-[rgb(var(--text-muted))]">
-                    Mitglied seit{" "}
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </div>
+
+                <div>
+                  <label className="text-sm !text-[rgb(var(--text-secondary))] mb-1 block">
+                    E-Mail
+                  </label>
+                  <p className="text-lg !text-[rgb(var(--text-primary))]">
+                    {user.email}
+                  </p>
+                </div>
+
+                <div>
+                  <label className="text-sm !text-[rgb(var(--text-secondary))] mb-1 block">
+                    Mitglied seit
+                  </label>
+                  <p className="text-lg !text-[rgb(var(--text-primary))]">
+                    {new Date(user.createdAt).toLocaleDateString("de-DE", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Cards Grid with Enhanced Animations and Shadows */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <NavLink
-              to="/favorites"
-              className="group card p-6 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] hover:scale-105 !no-underline transform hover:-translate-y-1"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-red-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                  </svg>
+          {/* Quick Actions */}
+          <div>
+            <h2 className="text-2xl font-bold !text-[rgb(var(--text-primary))] mb-6">
+              Schnellzugriff
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <NavLink
+                to="/favorites"
+                className="group bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] p-6 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl hover:scale-105 !no-underline transform hover:-translate-y-1"
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-14 h-14 bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <HeartFilledIcon className="w-7 h-7 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold !text-[rgb(var(--text-primary))] mb-1">
+                      Meine Favoriten
+                    </h3>
+                    <p className="text-sm !text-[rgb(var(--text-secondary))]">
+                      {favoriteCount} {favoriteCount === 1 ? "Film" : "Filme"}
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold !no-underline text-[rgb(var(--text-primary))]">
-                    Your Favorites
-                  </h3>
-                  <p className="text-sm text-[rgb(var(--text-secondary))]">
-                    {favoriteCount} {favoriteCount === 1 ? "Film" : "Films"}
-                  </p>
-                </div>
-              </div>
-              <p className="text-sm text-[rgb(var(--text-muted))]">
-                {favoriteCount === 0
-                  ? "still no favorite movies"
-                  : "view and manage your favorite movies"}
-              </p>
-            </NavLink>
+                <p className="text-sm !text-[rgb(var(--text-secondary))]">
+                  {favoriteCount === 0
+                    ? "Noch keine Lieblingsfilme vorhanden"
+                    : "Verwalte deine gespeicherten Filme"}
+                </p>
+              </NavLink>
 
-            <NavLink
-              to="/"
-              className="group card p-6 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] hover:scale-105 !no-underline transform hover:-translate-y-1"
-            >
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"
-                    />
-                  </svg>
+              <NavLink
+                to="/categories"
+                className="group bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] p-6 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl hover:scale-105 !no-underline transform hover:-translate-y-1"
+              >
+                <div className="flex items-start gap-4 mb-4">
+                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
+                    <VideoIcon className="w-7 h-7 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold !text-[rgb(var(--text-primary))] mb-1">
+                      Kategorien
+                    </h3>
+                    <p className="text-sm !text-[rgb(var(--text-secondary))]">
+                      Entdecken
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-[rgb(var(--text-primary))]">
-                    New Movies
-                  </h3>
-                  <p className="text-sm text-[rgb(var(--text-secondary))]"></p>
-                </div>
-              </div>
-              <p className="text-sm text-[rgb(var(--text-muted))]">
-                Discover the latest movies added to our collection
-              </p>
-            </NavLink>
+                <p className="text-sm !text-[rgb(var(--text-secondary))]">
+                  Stöbere durch verschiedene Film-Genres
+                </p>
+              </NavLink>
+            </div>
           </div>
         </div>
       </div>

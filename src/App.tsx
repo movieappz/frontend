@@ -16,6 +16,7 @@ import Login from "./pages/login/Login";
 import SignUp from "./pages/signUp/SignUp";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Favorites from "./pages/favorites/Favorites";
+import Categories from "./pages/categories/Categories";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 
 function App() {
@@ -32,6 +33,14 @@ function App() {
         }
       >
         <Route index element={<Home />} />
+        <Route
+          path="/categories"
+          element={
+            <PageWrapper>
+              <Categories />
+            </PageWrapper>
+          }
+        />
         <Route
           path="/category/:genreId"
           element={

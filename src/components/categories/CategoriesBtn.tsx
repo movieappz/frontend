@@ -1,27 +1,12 @@
-import { useContext } from "react";
-import { mainContext, type MainContextProps } from "../../context/MainProvider";
-import type { ICategory } from "../../interfaces/interfaces";
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 
 export default function CategoriesBtn() {
-  const { states } = useContext(mainContext) as MainContextProps;
-
   return (
-    <>
-      <ul className="flex gap-2 overflow-x-auto no-scrollbar pt-2 p-0 m-0">
-        {states.categories.map((category: ICategory) => {
-          return (
-            <li key={category.id} className="shrink-0">
-              <NavLink
-                to={`/category/${category.id}`}
-                className={"!text-green-500"}
-              >
-                <button className="btn-category">{category.name}</button>
-              </NavLink>
-            </li>
-          );
-        })}
-      </ul>
-    </>
+    <Link
+      to="/categories"
+      className="inline-block px-6 py-2 bg-gradient-to-r from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] !text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 !no-underline"
+    >
+      Categories
+    </Link>
   );
 }
