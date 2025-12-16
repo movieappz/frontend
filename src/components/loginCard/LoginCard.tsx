@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router";
+import { useNavigate } from "react-router";
 import { useUserStore } from "../../store/userStore";
 import { axiosPublic } from "../../utils/axiosConfig";
 
