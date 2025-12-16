@@ -116,16 +116,16 @@ export default function MovieDetail() {
       <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2">
         <button
           onClick={handleBack}
-          className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+          className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
           aria-label="Zurück"
         >
-          <ArrowLeftIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+          <ArrowLeftIcon className="w-6 h-6" />
         </button>
         {user && movie && (
           <>
             <button
               onClick={handleToggleFavorite}
-              className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+              className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
               aria-label={
                 isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"
               }
@@ -134,14 +134,14 @@ export default function MovieDetail() {
               }
             >
               {isFavorite ? (
-                <HeartFilledIcon className="w-5 h-5 sm:w-6 sm:h-6 !text-red-500" />
+                <HeartFilledIcon className="w-6 h-6 !text-red-500" />
               ) : (
-                <HeartIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+                <HeartIcon className="w-6 h-6" />
               )}
             </button>
             <button
               onClick={handleToggleWatched}
-              className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+              className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
               aria-label={
                 isWatched
                   ? "Als nicht gesehen markieren"
@@ -154,9 +154,9 @@ export default function MovieDetail() {
               }
             >
               {isWatched ? (
-                <EyeOpenIcon className="w-5 h-5 sm:w-6 sm:h-6 !text-green-500" />
+                <EyeOpenIcon className="w-6 h-6 !text-green-500" />
               ) : (
-                <EyeClosedIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+                <EyeClosedIcon className="w-6 h-6" />
               )}
             </button>
           </>
@@ -164,13 +164,13 @@ export default function MovieDetail() {
         <button
           onClick={fetchTrailer}
           disabled={loadingTrailer}
-          className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors disabled:opacity-50"
+          className="flex items-center justify-center w-11 h-11 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors disabled:opacity-50"
           aria-label="Trailer ansehen"
         >
           {loadingTrailer ? (
-            <div className="animate-spin h-5 w-5 sm:h-6 sm:w-6 border-2 border-[rgb(var(--text-primary))] border-t-transparent rounded-full"></div>
+            <div className="animate-spin h-6 w-6 border-2 border-[rgb(var(--text-primary))] border-t-transparent rounded-full"></div>
           ) : (
-            <VideoIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+            <VideoIcon className="w-6 h-6" />
           )}
         </button>
       </div>
