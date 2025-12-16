@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/userStore";
 import { NavLink } from "react-router";
+import axios from "axios";
+import { AUTH_HEADER } from "../../context/MainProvider";
 import {
   HeartFilledIcon,
   VideoIcon,
@@ -19,6 +21,9 @@ export default function Dashboard() {
   const [newUsername, setNewUsername] = useState("");
   const [profileImage, setProfileImage] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [watchedCount, setWatchedCount] = useState(0);
+  const [totalWatchtime, setTotalWatchtime] = useState(0);
+  const [ratingCount, setRatingCount] = useState(0);
 
   useEffect(() => {
     if (!user && !isLoading) {
@@ -26,8 +31,41 @@ export default function Dashboard() {
     }
     if (user) {
       setNewUsername(user.username);
+      setWatchedCount(user.watchedMovies?.length || 0);
+      setRatingCount(user.ratings?.length || 0);
     }
   }, [user, isLoading, reloadUser]);
+
+  useEffect(() => {
+    const calculateWatchtime = async () => {
+      if (!user || !user.favorites || user.favorites.length === 0) {
+        setTotalWatchtime(0);
+        return;
+      }
+
+      try {
+        const movieDetailsPromises = user.favorites.map((movieId) =>
+          axios.get(
+            `https://api.themoviedb.org/3/movie/${movieId}?language=de-DE`,
+            { headers: AUTH_HEADER }
+          )
+        );
+
+        const responses = await Promise.all(movieDetailsPromises);
+        const totalMinutes = responses.reduce((sum, response) => {
+          const runtime = response.data.runtime || 0;
+          return sum + runtime;
+        }, 0);
+
+        setTotalWatchtime(totalMinutes);
+      } catch (error) {
+        console.error("Error calculating watchtime:", error);
+        setTotalWatchtime(0);
+      }
+    };
+
+    calculateWatchtime();
+  }, [user?.favorites]);
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -124,48 +162,48 @@ export default function Dashboard() {
 
           {/* Statistics Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <div className="bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl p-6 shadow-lg text-white">
+            <NavLink
+              to="/favorites"
+              className="bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl p-6 shadow-lg text-white hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
+            >
               <div className="flex items-center justify-between mb-2">
                 <HeartFilledIcon className="w-8 h-8" />
                 <span className="text-3xl font-bold">{favoriteCount}</span>
               </div>
               <p className="text-sm opacity-90">Favoriten</p>
-            </div>
+            </NavLink>
 
-            <div className="bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] rounded-xl p-6 shadow-lg">
+            <NavLink
+              to="/watched"
+              className="bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl p-6 shadow-lg text-white hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
+            >
               <div className="flex items-center justify-between mb-2">
-                <VideoIcon className="w-8 h-8 !text-[rgb(var(--text-primary))]" />
-                <span className="text-3xl font-bold !text-[rgb(var(--text-primary))]">
-                  0
+                <VideoIcon className="w-8 h-8" />
+                <span className="text-3xl font-bold">{watchedCount}</span>
+              </div>
+              <p className="text-sm opacity-90">Angesehen</p>
+            </NavLink>
+
+            <div className="bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl p-6 shadow-lg text-white">
+              <div className="flex items-center justify-between mb-2">
+                <ClockIcon className="w-8 h-8" />
+                <span className="text-3xl font-bold">
+                  {totalWatchtime > 0
+                    ? `${Math.floor(totalWatchtime / 60)}h ${
+                        totalWatchtime % 60
+                      }m`
+                    : "0h"}
                 </span>
               </div>
-              <p className="text-sm !text-[rgb(var(--text-secondary))]">
-                Angesehen
-              </p>
+              <p className="text-sm opacity-90">Watchtime</p>
             </div>
 
-            <div className="bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] rounded-xl p-6 shadow-lg">
+            <div className="bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl p-6 shadow-lg text-white">
               <div className="flex items-center justify-between mb-2">
-                <ClockIcon className="w-8 h-8 !text-[rgb(var(--text-primary))]" />
-                <span className="text-3xl font-bold !text-[rgb(var(--text-primary))]">
-                  0h
-                </span>
+                <StarFilledIcon className="w-8 h-8" />
+                <span className="text-3xl font-bold">{ratingCount}</span>
               </div>
-              <p className="text-sm !text-[rgb(var(--text-secondary))]">
-                Watchtime
-              </p>
-            </div>
-
-            <div className="bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] rounded-xl p-6 shadow-lg">
-              <div className="flex items-center justify-between mb-2">
-                <StarFilledIcon className="w-8 h-8 !text-[rgb(var(--text-primary))]" />
-                <span className="text-3xl font-bold !text-[rgb(var(--text-primary))]">
-                  0
-                </span>
-              </div>
-              <p className="text-sm !text-[rgb(var(--text-secondary))]">
-                Bewertungen
-              </p>
+              <p className="text-sm opacity-90">Bewertungen</p>
             </div>
           </div>
 
@@ -282,60 +320,6 @@ export default function Dashboard() {
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div>
-            <h2 className="text-2xl font-bold !text-[rgb(var(--text-primary))] mb-6">
-              Schnellzugriff
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <NavLink
-                to="/favorites"
-                className="group bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] p-6 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl hover:scale-105 !no-underline transform hover:-translate-y-1"
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <HeartFilledIcon className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold !text-[rgb(var(--text-primary))] mb-1">
-                      Meine Favoriten
-                    </h3>
-                    <p className="text-sm !text-[rgb(var(--text-secondary))]">
-                      {favoriteCount} {favoriteCount === 1 ? "Film" : "Filme"}
-                    </p>
-                  </div>
-                </div>
-                <p className="text-sm !text-[rgb(var(--text-secondary))]">
-                  {favoriteCount === 0
-                    ? "Noch keine Lieblingsfilme vorhanden"
-                    : "Verwalte deine gespeicherten Filme"}
-                </p>
-              </NavLink>
-
-              <NavLink
-                to="/categories"
-                className="group bg-[rgb(var(--bg-secondary))] border border-[rgb(var(--border))] p-6 shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl hover:scale-105 !no-underline transform hover:-translate-y-1"
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-indigo-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-md">
-                    <VideoIcon className="w-7 h-7 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-xl font-bold !text-[rgb(var(--text-primary))] mb-1">
-                      Kategorien
-                    </h3>
-                    <p className="text-sm !text-[rgb(var(--text-secondary))]">
-                      Entdecken
-                    </p>
-                  </div>
-                </div>
-                <p className="text-sm !text-[rgb(var(--text-secondary))]">
-                  Stöbere durch verschiedene Film-Genres
-                </p>
-              </NavLink>
             </div>
           </div>
         </div>

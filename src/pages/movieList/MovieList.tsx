@@ -1,10 +1,11 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { mainContext, type MainContextProps } from "../../context/MainProvider";
 
 import MovieItem from "../../components/movieItem/MovieItem";
 import { useNavigate } from "react-router";
 import SkeletonGrid from "../../components/SkeletonCard/SkeletonGrid";
 import { useTheme } from "../../context/ThemeProvider";
+import gsap from "gsap";
 
 export default function MoviePage() {
   const { states, nextPage, prevPage } = useContext(
@@ -13,6 +14,7 @@ export default function MoviePage() {
   const navigate = useNavigate();
 
   const { theme } = useTheme();
+  const moviesGridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
@@ -25,6 +27,41 @@ export default function MoviePage() {
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
   }, [states.page]);
+
+  // GSAP Animation when movies load
+  useEffect(() => {
+    if (
+      !states.loading &&
+      states.movies &&
+      states.movies.length > 0 &&
+      moviesGridRef.current
+    ) {
+      const movieCards = moviesGridRef.current.querySelectorAll(".movie-card");
+
+      gsap.fromTo(
+        movieCards,
+        {
+          opacity: 0,
+          y: 60,
+          scale: 0.85,
+          rotationY: -15,
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          rotationY: 0,
+          duration: 0.7,
+          stagger: {
+            amount: 0.8,
+            from: "start",
+            ease: "power2.out",
+          },
+          ease: "back.out(1.4)",
+        }
+      );
+    }
+  }, [states.movies, states.loading]);
 
   if (states.error) {
     return (
@@ -41,9 +78,14 @@ export default function MoviePage() {
       ) : (
         <>
           {states?.movies && states.movies.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div
+              ref={moviesGridRef}
+              className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4"
+            >
               {states.movies.map((movie) => (
-                <MovieItem key={movie.id} movie={movie} />
+                <div key={movie.id} className="movie-card">
+                  <MovieItem movie={movie} />
+                </div>
               ))}
             </div>
           ) : (

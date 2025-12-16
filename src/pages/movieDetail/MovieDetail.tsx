@@ -15,12 +15,15 @@ import {
   HeartIcon,
   VideoIcon,
   Cross2Icon,
+  EyeOpenIcon,
+  EyeClosedIcon,
 } from "@radix-ui/react-icons";
+import StarRating from "../../components/starRating/StarRating";
 
 export default function MovieDetail() {
   const { movieId } = useParams();
   const navigate = useNavigate();
-  const { user, toggleFavorite } = useUserStore();
+  const { user, toggleFavorite, rateMovie, toggleWatched } = useUserStore();
 
   const { states, fetchMovieDetail } = useContext(
     mainContext
@@ -58,10 +61,29 @@ export default function MovieDetail() {
   const handleBack = () => navigate(-1);
 
   const isFavorite = movie && user?.favorites?.includes(movie.id || -1);
+  const isWatched = movie && user?.watchedMovies?.includes(movie.id || -1);
+
+  const currentRating = useMemo(() => {
+    if (!movie || !user?.ratings) return 0;
+    const rating = user.ratings.find((r) => r.movieId === movie.id);
+    return rating ? rating.rating : 0;
+  }, [movie, user?.ratings]);
 
   const handleToggleFavorite = () => {
     if (movie && user) {
       toggleFavorite(movie.id);
+    }
+  };
+
+  const handleToggleWatched = () => {
+    if (movie && user) {
+      toggleWatched(movie.id);
+    }
+  };
+
+  const handleRating = (rating: number) => {
+    if (movie && user) {
+      rateMovie(movie.id, rating);
     }
   };
 
@@ -91,7 +113,7 @@ export default function MovieDetail() {
   return (
     <div className="container-responsive">
       {states.loading && <SkeletonGrid count={10} />}
-      <div className="mb-4 flex items-center gap-2">
+      <div className="mb-4 flex flex-wrap items-center gap-2">
         <button
           onClick={handleBack}
           className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
@@ -100,20 +122,44 @@ export default function MovieDetail() {
           <ArrowLeftIcon className="w-6 h-6" />
         </button>
         {user && movie && (
-          <button
-            onClick={handleToggleFavorite}
-            className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
-            aria-label={
-              isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"
-            }
-            title={isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"}
-          >
-            {isFavorite ? (
-              <HeartFilledIcon className="w-6 h-6 !text-red-500" />
-            ) : (
-              <HeartIcon className="w-6 h-6" />
-            )}
-          </button>
+          <>
+            <button
+              onClick={handleToggleFavorite}
+              className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+              aria-label={
+                isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"
+              }
+              title={
+                isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"
+              }
+            >
+              {isFavorite ? (
+                <HeartFilledIcon className="w-6 h-6 !text-red-500" />
+              ) : (
+                <HeartIcon className="w-6 h-6" />
+              )}
+            </button>
+            <button
+              onClick={handleToggleWatched}
+              className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+              aria-label={
+                isWatched
+                  ? "Als nicht gesehen markieren"
+                  : "Als gesehen markieren"
+              }
+              title={
+                isWatched
+                  ? "Als nicht gesehen markieren"
+                  : "Als gesehen markieren"
+              }
+            >
+              {isWatched ? (
+                <EyeOpenIcon className="w-6 h-6 !text-green-500" />
+              ) : (
+                <EyeClosedIcon className="w-6 h-6" />
+              )}
+            </button>
+          </>
         )}
         <button
           onClick={fetchTrailer}
@@ -164,6 +210,27 @@ export default function MovieDetail() {
               <p className="leading-relaxed mb-4 !text-[rgb(var(--text-primary))]">
                 {movie.overview}
               </p>
+            )}
+
+            {/* Rating Section */}
+            {user && movie && (
+              <div className="mb-4 p-4 rounded-lg border-2 border-[rgb(var(--border))] bg-[rgb(var(--bg-primary))]">
+                <h3 className="font-semibold mb-3 !text-[rgb(var(--text-primary))]">
+                  Deine Bewertung
+                </h3>
+                <div className="flex items-center gap-3">
+                  <StarRating
+                    rating={currentRating}
+                    onRate={handleRating}
+                    size="lg"
+                  />
+                  {currentRating > 0 && (
+                    <span className="!text-[rgb(var(--text-secondary))] text-sm">
+                      ({currentRating} von 5 Sternen)
+                    </span>
+                  )}
+                </div>
+              </div>
             )}
 
             {movie?.production_companies &&

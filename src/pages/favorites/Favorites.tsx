@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useUserStore } from "../../store/userStore";
 import type { IMovieDetail } from "../../interfaces/IMovieDetail";
-import { NavLink } from "react-router";
+import { NavLink, useNavigate } from "react-router";
 
 import axios from "axios";
 import MovieItem from "../../components/movieItem/MovieItem";
+import { ArrowLeftIcon } from "@radix-ui/react-icons";
 
 const AUTH_HEADER = {
   Authorization: "Bearer " + String(import.meta.env.VITE_KEY_BAREAR),
@@ -12,6 +13,7 @@ const AUTH_HEADER = {
 
 export default function Favorites() {
   const { user } = useUserStore();
+  const navigate = useNavigate();
   const [favoriteMovies, setFavoriteMovies] = useState<IMovieDetail[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -110,6 +112,15 @@ export default function Favorites() {
   return (
     <div className="container-responsive">
       <div className="max-w-7xl mx-auto">
+        <div className="mb-4 flex items-center gap-2">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+            aria-label="Zurück"
+          >
+            <ArrowLeftIcon className="w-6 h-6" />
+          </button>
+        </div>
         <div className="mb-8">
           <h1 className="text-4xl font-bold text-[rgb(var(--text-primary))] mb-2">
             My Favorites

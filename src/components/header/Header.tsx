@@ -69,13 +69,6 @@ export default function Header() {
               {!user ? (
                 <div className="flex items-center gap-2">
                   <Link
-                    to={"/login"}
-                    className="p-2 rounded-lg bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-tertiary))] transition-all duration-200 shadow-sm hover:shadow-md !text-[rgb(var(--text-primary))] !no-underline"
-                    aria-label="login"
-                  >
-                    <EnterIcon className="w-6 h-6" />
-                  </Link>
-                  <Link
                     to={"/signup"}
                     className="p-2 rounded-lg bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-tertiary))] transition-all duration-200 shadow-sm hover:shadow-md !text-[rgb(var(--text-primary))] !no-underline"
                     aria-label="signup"

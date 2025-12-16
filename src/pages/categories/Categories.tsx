@@ -1,14 +1,25 @@
 import { useContext } from "react";
 import { mainContext, type MainContextProps } from "../../context/MainProvider";
 import type { ICategory } from "../../interfaces/interfaces";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { ArrowLeftIcon } from "@radix-ui/react-icons";
 
 export default function Categories() {
   const { states } = useContext(mainContext) as MainContextProps;
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-[rgb(var(--bg-primary))] pt-24 pb-12">
       <div className="container-responsive">
+        <div className="mb-4 flex items-center gap-2">
+          <button
+            onClick={() => navigate(-1)}
+            className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+            aria-label="Zurück"
+          >
+            <ArrowLeftIcon className="w-6 h-6" />
+          </button>
+        </div>
         {/* Header Section */}
         <div className="mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-[rgb(var(--text-primary))] mb-4">

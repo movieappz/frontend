@@ -4,6 +4,12 @@ export interface IUser {
     email: string;
     password: string;
     favorites: number[];
+    watchedMovies: number[];
+    ratings: Array<{
+        movieId: number;
+        rating: number;
+        createdAt: string;
+    }>;
     createdAt: string;
 }
 

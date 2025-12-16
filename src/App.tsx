@@ -16,6 +16,7 @@ import Login from "./pages/login/Login";
 import SignUp from "./pages/signUp/SignUp";
 import Dashboard from "./pages/dashboard/Dashboard";
 import Favorites from "./pages/favorites/Favorites";
+import Watched from "./pages/watched/Watched";
 import Categories from "./pages/categories/Categories";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 
@@ -100,6 +101,17 @@ function App() {
             <PageWrapper>
               <ProtectedRoute>
                 <Favorites />
+              </ProtectedRoute>
+            </PageWrapper>
+          }
+        />
+
+        <Route
+          path="/watched"
+          element={
+            <PageWrapper>
+              <ProtectedRoute>
+                <Watched />
               </ProtectedRoute>
             </PageWrapper>
           }
