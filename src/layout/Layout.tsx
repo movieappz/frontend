@@ -27,8 +27,8 @@ export default function Layout() {
     >
       <Header />
       <div
-        className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 pb-6 lg:pb-8"
-        style={{ paddingTop: headerHeight + 16 }}
+        className="mx-auto w-full max-w-7xl px-2 sm:px-4 lg:px-8 pb-4 sm:pb-6 lg:pb-8"
+        style={{ paddingTop: headerHeight + 8 }}
       >
         <PageWrapper>
           <main className="flex flex-col">

@@ -113,19 +113,19 @@ export default function MovieDetail() {
   return (
     <div className="container-responsive">
       {states.loading && <SkeletonGrid count={10} />}
-      <div className="mb-4 flex flex-wrap items-center gap-2">
+      <div className="mb-3 sm:mb-4 flex flex-wrap items-center gap-2">
         <button
           onClick={handleBack}
-          className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+          className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
           aria-label="Zurück"
         >
-          <ArrowLeftIcon className="w-6 h-6" />
+          <ArrowLeftIcon className="w-5 h-5 sm:w-6 sm:h-6" />
         </button>
         {user && movie && (
           <>
             <button
               onClick={handleToggleFavorite}
-              className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+              className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
               aria-label={
                 isFavorite ? "Favorit entfernen" : "Zu Favoriten hinzufügen"
               }
@@ -134,14 +134,14 @@ export default function MovieDetail() {
               }
             >
               {isFavorite ? (
-                <HeartFilledIcon className="w-6 h-6 !text-red-500" />
+                <HeartFilledIcon className="w-5 h-5 sm:w-6 sm:h-6 !text-red-500" />
               ) : (
-                <HeartIcon className="w-6 h-6" />
+                <HeartIcon className="w-5 h-5 sm:w-6 sm:h-6" />
               )}
             </button>
             <button
               onClick={handleToggleWatched}
-              className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
+              className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors"
               aria-label={
                 isWatched
                   ? "Als nicht gesehen markieren"
@@ -154,9 +154,9 @@ export default function MovieDetail() {
               }
             >
               {isWatched ? (
-                <EyeOpenIcon className="w-6 h-6 !text-green-500" />
+                <EyeOpenIcon className="w-5 h-5 sm:w-6 sm:h-6 !text-green-500" />
               ) : (
-                <EyeClosedIcon className="w-6 h-6" />
+                <EyeClosedIcon className="w-5 h-5 sm:w-6 sm:h-6" />
               )}
             </button>
           </>
@@ -164,68 +164,72 @@ export default function MovieDetail() {
         <button
           onClick={fetchTrailer}
           disabled={loadingTrailer}
-          className="flex items-center justify-center w-12 h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors disabled:opacity-50"
+          className="flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--accent-primary))]/20 !text-[rgb(var(--text-primary))] rounded-lg transition-colors disabled:opacity-50"
           aria-label="Trailer ansehen"
         >
           {loadingTrailer ? (
-            <div className="animate-spin h-6 w-6 border-2 border-[rgb(var(--text-primary))] border-t-transparent rounded-full"></div>
+            <div className="animate-spin h-5 w-5 sm:h-6 sm:w-6 border-2 border-[rgb(var(--text-primary))] border-t-transparent rounded-full"></div>
           ) : (
-            <VideoIcon className="w-6 h-6" />
+            <VideoIcon className="w-5 h-5 sm:w-6 sm:h-6" />
           )}
         </button>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
         <div className="lg:col-span-1">
-          <div className="rounded-xl overflow-hidden border-2 border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary))] shadow-lg">
+          <div className="rounded-lg sm:rounded-xl overflow-hidden border-2 border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary))] shadow-lg">
             <img src={imageUrl} alt={title} className="w-full object-cover" />
           </div>
         </div>
         <div className="lg:col-span-2">
-          <div className="rounded-xl border-2 border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary))] shadow-lg p-4 sm:p-6">
-            <h1 className="text-2xl sm:text-3xl font-bold !text-[rgb(var(--text-primary))] mb-2">
+          <div className="rounded-lg sm:rounded-xl border-2 border-[rgb(var(--border))] bg-[rgb(var(--bg-secondary))] shadow-lg p-3 sm:p-4 md:p-6">
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold !text-[rgb(var(--text-primary))] mb-2">
               {title}
               {releaseYear ? (
                 <span className="opacity-80"> ({releaseYear})</span>
               ) : null}
             </h1>
             {movie?.tagline && (
-              <p className="italic !text-[rgb(var(--text-secondary))] opacity-80 mb-3">
+              <p className="text-sm sm:text-base italic !text-[rgb(var(--text-secondary))] opacity-80 mb-2 sm:mb-3">
                 {movie.tagline}
               </p>
             )}
-            <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm sm:text-base mb-3 !text-[rgb(var(--text-secondary))]">
+            <div className="flex flex-wrap gap-x-3 sm:gap-x-4 gap-y-1 text-xs sm:text-sm md:text-base mb-3 !text-[rgb(var(--text-secondary))]">
               {movie?.vote_average !== undefined && (
                 <span>⭐️ {movie.vote_average.toFixed(1)}</span>
               )}
               {runtime && <span>• {runtime} min</span>}
               {movie?.genres && movie.genres.length > 0 && (
-                <span>• {movie.genres.map((g) => g.name).join(", ")}</span>
+                <span className="hidden sm:inline">
+                  • {movie.genres.map((g) => g.name).join(", ")}
+                </span>
               )}
               {movie?.original_language && (
                 <span>• Lang: {movie.original_language.toUpperCase()}</span>
               )}
             </div>
             {movie?.overview && (
-              <p className="leading-relaxed mb-4 !text-[rgb(var(--text-primary))]">
+              <p className="text-sm sm:text-base leading-relaxed mb-3 sm:mb-4 !text-[rgb(var(--text-primary))]">
                 {movie.overview}
               </p>
             )}
 
             {/* Rating Section */}
             {user && movie && (
-              <div className="mb-4 p-4 rounded-lg border-2 border-[rgb(var(--border))] bg-[rgb(var(--bg-primary))]">
-                <h3 className="font-semibold mb-3 !text-[rgb(var(--text-primary))]">
+              <div className="mb-3 sm:mb-4 p-3 sm:p-4 rounded-lg border-2 border-[rgb(var(--border))] bg-[rgb(var(--bg-primary))]">
+                <h3 className="font-semibold mb-2 sm:mb-3 !text-[rgb(var(--text-primary))] text-sm sm:text-base">
                   Deine Bewertung
                 </h3>
-                <div className="flex items-center gap-3">
-                  <StarRating
-                    rating={currentRating}
-                    onRate={handleRating}
-                    size="lg"
-                  />
+                <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
+                  <div className="w-full sm:w-auto">
+                    <StarRating
+                      rating={currentRating}
+                      onRate={handleRating}
+                      size="md"
+                    />
+                  </div>
                   {currentRating > 0 && (
-                    <span className="!text-[rgb(var(--text-secondary))] text-sm">
+                    <span className="!text-[rgb(var(--text-secondary))] text-xs sm:text-sm whitespace-nowrap">
                       ({currentRating} von 5 Sternen)
                     </span>
                   )}

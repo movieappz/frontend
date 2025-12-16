@@ -6,7 +6,6 @@ import { Link, useNavigate } from "react-router";
 import { useUserStore } from "../../store/userStore";
 import { axiosPublic } from "../../utils/axiosConfig";
 import {
-  EnterIcon,
   PersonIcon,
   HomeIcon,
   ExitIcon,
@@ -38,16 +37,18 @@ export default function Header() {
           isHeaderVisible ? "top-0" : "-top-full"
         }`}
       >
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+        <div className="mx-auto w-full max-w-7xl px-2 sm:px-4 lg:px-8 py-3 sm:py-4">
           {/* Main Row - Logo, Categories, Search, Actions */}
-          <div className="flex items-center gap-4 justify-between">
+          <div className="flex items-center gap-2 sm:gap-4 justify-between">
             {/* Logo */}
             <Link
               to={"/"}
               className="inline-flex items-center gap-2 !no-underline group shrink-0"
             >
-              <div className="w-10 h-10 bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-200">
-                <span className="text-white font-bold text-lg">M</span>
+              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-[rgb(var(--accent-primary))] to-[rgb(var(--accent-secondary))] rounded-xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-200">
+                <span className="text-white font-bold text-base sm:text-lg">
+                  M
+                </span>
               </div>
             </Link>
 
@@ -62,7 +63,7 @@ export default function Header() {
             </div>
 
             {/* Right Side - Actions */}
-            <div className="flex items-center gap-3 sm:gap-4 shrink-0">
+            <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               {/* Theme Toggle */}
               <ThemeToggle />
 
@@ -70,28 +71,28 @@ export default function Header() {
                 <div className="flex items-center gap-2">
                   <Link
                     to={"/signup"}
-                    className="p-2 rounded-lg bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-tertiary))] transition-all duration-200 shadow-sm hover:shadow-md !text-[rgb(var(--text-primary))] !no-underline"
+                    className="p-1.5 sm:p-2 rounded-lg bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-tertiary))] transition-all duration-200 shadow-sm hover:shadow-md !text-[rgb(var(--text-primary))] !no-underline"
                     aria-label="signup"
                   >
-                    <PersonIcon className="w-6 h-6" />
+                    <PersonIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </Link>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <Link
                     to="/dashboard"
-                    className="p-2 rounded-lg bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-tertiary))] transition-all duration-200 shadow-sm hover:shadow-md !text-[rgb(var(--text-primary))] !no-underline"
+                    className="p-1.5 sm:p-2 rounded-lg bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-tertiary))] transition-all duration-200 shadow-sm hover:shadow-md !text-[rgb(var(--text-primary))] !no-underline"
                     aria-label="dashboard"
                   >
-                    <HomeIcon className="w-6 h-6" />
+                    <HomeIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </Link>
 
                   <button
                     onClick={handleLogout}
                     aria-label="logout"
-                    className="p-2 rounded-lg bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-tertiary))] transition-all duration-200 shadow-sm hover:shadow-md !text-[rgb(var(--text-primary))]"
+                    className="p-1.5 sm:p-2 rounded-lg bg-[rgb(var(--bg-secondary))] border-2 border-[rgb(var(--border))] hover:bg-[rgb(var(--bg-tertiary))] transition-all duration-200 shadow-sm hover:shadow-md !text-[rgb(var(--text-primary))]"
                   >
-                    <ExitIcon className="w-6 h-6" />
+                    <ExitIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                   </button>
                 </div>
               )}
@@ -111,15 +112,15 @@ export default function Header() {
       {/* Toggle Button */}
       <button
         onClick={() => setIsHeaderVisible(!isHeaderVisible)}
-        className={`fixed z-50 left-1/2 -translate-x-1/2 p-2 rounded-b-xl bg-[rgb(var(--bg-secondary))] border-2 border-t-0 border-[rgb(var(--border))] shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out ${
-          isHeaderVisible ? "top-[72px] md:top-[88px]" : "top-0"
+        className={`fixed z-50 right-4 p-2 rounded-b-xl bg-[rgb(var(--bg-secondary))] border-2 border-t-0 border-[rgb(var(--border))] shadow-lg hover:shadow-xl transition-all duration-500 ease-in-out ${
+          isHeaderVisible ? "top-[68px] sm:top-[72px] md:top-[88px]" : "top-0"
         }`}
         aria-label={isHeaderVisible ? "Header ausblenden" : "Header einblenden"}
       >
         {isHeaderVisible ? (
-          <ChevronUpIcon className="w-6 h-6 !text-[rgb(var(--text-primary))]" />
+          <ChevronUpIcon className="w-5 h-5 sm:w-6 sm:h-6 !text-[rgb(var(--text-primary))]" />
         ) : (
-          <ChevronDownIcon className="w-6 h-6 !text-[rgb(var(--text-primary))]" />
+          <ChevronDownIcon className="w-5 h-5 sm:w-6 sm:h-6 !text-[rgb(var(--text-primary))]" />
         )}
       </button>
     </>
