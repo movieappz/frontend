@@ -1,18 +1,21 @@
 import { useUserStore } from "../../store/userStore";
 import LoginCard from "../../components/loginCard/LoginCard";
+import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 export default function Login() {
   const { user, isLoggedIn } = useUserStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isLoggedIn && user) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [isLoggedIn, user, navigate]);
 
   return (
     <div className="h-[calc(100vh-72px)] md:h-[calc(100vh-112px)] grid place-items-center">
-      {isLoggedIn && user ? (
-        <p className="text-center w-full text-[clamp(32px,6vw,72px)] font-extrabold leading-[1.05] text-[rgb(var(--text-primary))]">
-          Hello {user?.username}, you are already logged in!
-        </p>
-      ) : (
-        <LoginCard />
-      )}
+      <LoginCard />
     </div>
   );
 }

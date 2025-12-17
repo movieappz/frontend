@@ -17,6 +17,7 @@ export default function LoginCard() {
 
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as {
+      username?: string;
       email: string;
       password: string;
       passwordRepeat?: string;
@@ -30,23 +31,37 @@ export default function LoginCard() {
 
     try {
       const endpoint = signup ? "/auth/signup" : "/auth/login";
-      const resp = await axiosPublic.post(
-        endpoint,
-        { email: data.email, password: data.password },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      );
+      const payload = signup
+        ? {
+            username: data.username,
+            email: data.email,
+            password: data.password,
+          }
+        : {
+            email: data.email,
+            password: data.password,
+          };
+      const resp = await axiosPublic.post(endpoint, payload);
 
-      if (resp.data.loggingUser || resp.data.user) {
-        setUser(resp.data.loggingUser || resp.data.user);
-        navigate("/dashboard");
+      const userData = resp.data.loggingUser || resp.data.user;
+
+      if (userData) {
+        const normalizedUser = {
+          ...userData,
+          favorites: userData.favorites || [],
+          watchedMovies: userData.watchedMovies || [],
+          ratings: userData.ratings || [],
+        };
+
+        setUser(normalizedUser);
+
+        setTimeout(() => {
+          navigate("/dashboard", { replace: true });
+        }, 100);
       } else {
         setError(signup ? "Sign up failed" : "Login failed");
       }
     } catch (err: any) {
-      console.error(err);
       setError(
         err.response?.data?.errors?.[0]?.message ||
           (signup
@@ -70,6 +85,16 @@ export default function LoginCard() {
       </h2>
 
       <form className="w-full flex flex-col gap-4 mb-4" onSubmit={handleSubmit}>
+        {signup && (
+          <input
+            name="username"
+            type="text"
+            required
+            placeholder="Username"
+            className="input rounded-full"
+          />
+        )}
+
         <input
           name="email"
           type="email"

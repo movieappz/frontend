@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_URL;
+const baseURL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 export const axiosPublic = axios.create({
     baseURL,
@@ -17,12 +17,7 @@ axiosPublic.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        console.error(`❌ ${error.response?.status || 'Network Error'}`, error.config?.url);
-
         if (error.response?.status === 401) {
-            console.log("401 Unauthorized - Token ungültig oder abgelaufen");
-
-            // ! Verhindere endlose Schleifen
             if (!originalRequest._retry) {
                 originalRequest._retry = true;
 
@@ -48,7 +43,6 @@ axiosPublic.interceptors.request.use(
         return config;
     },
     (error) => {
-        console.error("Request Error:", error);
         return Promise.reject(error);
     }
 );
